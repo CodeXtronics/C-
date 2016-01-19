@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GestionProjet.Metier
 {
-    class ProjetForfait : Projet
+    class ProjetForfait : Projet, IEquatable<object>
     {
         
 
@@ -79,21 +79,31 @@ namespace GestionProjet.Metier
                 PenaliteOuiNon = Penalite.Non;                
             }
         }        
-        public bool Equals(ProjetForfait other,bool nom)
+        public bool Equals(object other,bool nom)
         {
-            if (nom)
+            if (other is ProjetForfait)
             {
-                return other is ProjetForfait && NomProjet == other.NomProjet;
+                if (nom)
+                {
+                    return NomProjet == ((ProjetForfait)other).NomProjet;
+                }
+                else
+                {
+                    return CodeProjet == ((ProjetForfait)other).CodeProjet;
+                }
             }
             else
             {
-                return other is ProjetForfait && CodeProjet == other.CodeProjet;
+                return false;
             }
+           
         }
         public override string ToString()
         {
             return "Projet : "+ NomProjet + ", n° " + CodeProjet + ", "  + "Durée du projet du :" + DDebut + " au " + DFin + "\n," + LeClient + ",\n Contact : " +  Contact + ", mail : " + MailContact + ", Montant du contrat" + MontantContrat + ",\n" + ChefDeProjet + ", Penalité de retard :  " + PenaliteOuiNon;
         }
+
+
     }
 }
 

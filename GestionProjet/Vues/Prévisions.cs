@@ -62,7 +62,7 @@ namespace GestionProjet
         {
             if (butModifierClick)
             {
-                if((Qualification)comboBoxQualification.SelectedItem)
+                //if(Previsio comboBoxQualification.SelectedItem)
                 ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif = (Qualification)comboBoxQualification.SelectedItem;
                 nbJours.Value = numericUpDownNbJours.Value;
                 
