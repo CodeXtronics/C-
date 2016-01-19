@@ -42,7 +42,7 @@ namespace GestionProjet
             butCreerClick = true;
             btnCreer.Enabled = false;
             comboBoxQualification.ResetText();
-            numericUpDownNbJours.ResetText();
+            numericUpDownNbJours.Value=0;
         }
 
         private void comboBoxProjets_SelectedIndexChanged(object sender, EventArgs e)
@@ -62,22 +62,32 @@ namespace GestionProjet
         {
             if (butModifierClick)
             {
+                if((Qualification)comboBoxQualification.SelectedItem)
                 ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif = (Qualification)comboBoxQualification.SelectedItem;
                 nbJours.Value = numericUpDownNbJours.Value;
-                previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+                
                 butModifierClick = false;
                 grpboxPrevision.Visible = false;
                 comboBoxProjets.Enabled = true;
                 btnCreer.Enabled = true;
+
+                //Mets  a jours les données du databinding prevision.
+                previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+                previsionBindingSource.ResetBindings(true);
+
             }
             else if (butCreerClick)
             {
                 DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].AddPrevision(new Prevision((Qualification)comboBoxQualification.SelectedItem, (short)numericUpDownNbJours.Value));
                 butCreerClick = false;
-                previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+                
                 grpboxPrevision.Visible = false;
                 comboBoxProjets.Enabled = true;
                 btnCreer.Enabled = true;
+
+                //Mets  a jours les données du databinding prevision.
+                previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+                previsionBindingSource.ResetBindings(true);
             }
         }
 
@@ -91,13 +101,16 @@ namespace GestionProjet
             {                
                 dataGridViewLesPrevisions.Rows.RemoveAt(e.RowIndex);
             }
-            else if (cell.Value.ToString() == "Modifier")
-            {
+            else if (cell.Value.ToString() == "Modifier")//Permet de modifier la valeur des informations de la ligne.
+            {   //Active les controles de modification et désactive les controles inutile.
                 grpboxPrevision.Visible = true;
-                comboBoxQualification.SelectedItem = ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif;
-                numericUpDownNbJours.Value =Convert.ToDecimal(nbJours.Value);
                 butModifierClick = true;
                 btnCreer.Enabled = false;
+                comboBoxProjets.Enabled = false;
+
+                comboBoxQualification.SelectedItem = ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif;
+                numericUpDownNbJours.Value =Convert.ToDecimal(nbJours.Value);
+
             }
 
         }

@@ -58,3 +58,10 @@ D:\Visual Studio 2015\Projects\GestionProjet option Prévision\GestionProjet\obj
 D:\GitHub\C-\GestionProjet\bin\Debug\GestionProjet.exe.config
 D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.exe
 D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.pdb
+D:\GitHub\C-\GestionProjet\bin\Debug\GestionProjet.exe
+D:\GitHub\C-\GestionProjet\bin\Debug\GestionProjet.pdb
+D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.csprojResolveAssemblyReference.cache
+D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.Properties.Resources.resources
+D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.FrmCreationProjet.resources
+D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.Prévisions.resources
+D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.csproj.GenerateResource.Cache
