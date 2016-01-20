@@ -46,6 +46,7 @@
             this.nbJoursDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Modifier = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Supprimer = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnConnection = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.projetForfaitBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.previsionBindingSource)).BeginInit();
@@ -218,11 +219,22 @@
             this.Supprimer.Text = "Supprimer";
             this.Supprimer.UseColumnTextForButtonValue = true;
             // 
+            // btnConnection
+            // 
+            this.btnConnection.Location = new System.Drawing.Point(432, 10);
+            this.btnConnection.Name = "btnConnection";
+            this.btnConnection.Size = new System.Drawing.Size(75, 23);
+            this.btnConnection.TabIndex = 7;
+            this.btnConnection.Text = "Connection";
+            this.btnConnection.UseVisualStyleBackColor = true;
+            this.btnConnection.Click += new System.EventHandler(this.btnConnection_Click);
+            // 
             // Prévisions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(548, 422);
+            this.Controls.Add(this.btnConnection);
             this.Controls.Add(this.dataGridViewLesPrevisions);
             this.Controls.Add(this.lblPrevisions);
             this.Controls.Add(this.lblProjets);
@@ -262,5 +274,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn nbJoursDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewButtonColumn Modifier;
         private System.Windows.Forms.DataGridViewButtonColumn Supprimer;
+        private System.Windows.Forms.Button btnConnection;
     }
 }

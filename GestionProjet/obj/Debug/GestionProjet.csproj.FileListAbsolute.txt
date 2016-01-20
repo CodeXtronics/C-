@@ -65,3 +65,13 @@ D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.Properties.Resources.resource
 D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.FrmCreationProjet.resources
 D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.Prévisions.resources
 D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.csproj.GenerateResource.Cache
+E:\Projets Concepteur informatique\C-\GestionProjet\bin\Debug\GestionProjet.exe.config
+E:\Projets Concepteur informatique\C-\GestionProjet\obj\Debug\GestionProjet.exe
+E:\Projets Concepteur informatique\C-\GestionProjet\obj\Debug\GestionProjet.pdb
+E:\Projets Concepteur informatique\C-\GestionProjet\obj\Debug\GestionProjet.csprojResolveAssemblyReference.cache
+E:\Projets Concepteur informatique\C-\GestionProjet\obj\Debug\GestionProjet.Properties.Resources.resources
+E:\Projets Concepteur informatique\C-\GestionProjet\obj\Debug\GestionProjet.FrmCreationProjet.resources
+E:\Projets Concepteur informatique\C-\GestionProjet\obj\Debug\GestionProjet.Prévisions.resources
+E:\Projets Concepteur informatique\C-\GestionProjet\obj\Debug\GestionProjet.csproj.GenerateResource.Cache
+E:\Projets Concepteur informatique\C-\GestionProjet\bin\Debug\GestionProjet.exe
+E:\Projets Concepteur informatique\C-\GestionProjet\bin\Debug\GestionProjet.pdb

@@ -7,11 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
+
 
 namespace GestionProjet
 {
+    
     using Dao;
     using Metier;
+
+    
     public partial class Prévisions : Form
     {
         DataGridViewCell nbJours;
@@ -19,6 +24,13 @@ namespace GestionProjet
         DataGridViewCell modif;
         bool butModifierClick;
         bool butCreerClick;
+
+        SqlCommand sqlCde;
+        SqlDataReader sqlRdr;
+        SqlConnection sqlConnect;
+        
+
+
         public Prévisions()
         {
             InitializeComponent();
@@ -31,7 +43,14 @@ namespace GestionProjet
             qualificationBindingSource.DataSource = DaoProjet.GetAllQualifications();
             comboBoxProjets.SelectedItem = null;
             btnCreer.Enabled = false;
+        }
+        private void ConnectSQLServ()
+        {
             
+            sqlConnect = new SqlConnection();
+            sqlConnect.ConnectionString = "Data Source = (local);" + "Initial Catalog = GesProjet;" +
+                "Integrated Security = True;" + "Connection TimeOut=5";
+
             
         }
 
@@ -47,8 +66,39 @@ namespace GestionProjet
 
         private void comboBoxProjets_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(comboBoxProjets.SelectedItem!=null)previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
-            btnCreer.Enabled = true;
+            //if(comboBoxProjets.SelectedItem!=null)previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+            //btnCreer.Enabled = true;
+            try
+            {
+                // Ouvre la connection. 
+                sqlConnect.Open();
+                // Création de la commande  
+                sqlCde = new SqlCommand();
+                sqlCde.Connection = sqlConnect;
+                // Constitution Requête SQL  
+                string strSql = "exec GetAllProjet";
+                // Positionnement des propriétés  
+                sqlCde.CommandType = CommandType.Text;
+                sqlCde.CommandText = strSql;
+                // Exécution de la commande  
+                sqlRdr = sqlCde.ExecuteReader();
+                // Lecture des données du DataReader  
+                while (sqlRdr.Read())
+                {
+                    //int numE = sqlRdr.GetInt16(0);
+                    string nomE = sqlRdr.GetString(5);
+                    MessageBox.Show(nomE, "Connexion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                // Fin des données  
+                sqlRdr.Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Erreur de connexion à la base", "Connexion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            finally { sqlConnect.Close(); }
+
         }
 
         private void btnAnnuler_Click(object sender, EventArgs e)
@@ -113,6 +163,42 @@ namespace GestionProjet
 
             }
 
+        }
+
+        private void btnConnection_Click(object sender, EventArgs e)
+        {
+           
+            // création de la connection 
+            try
+            {
+                // Ouvre la connection. 
+                sqlConnect.Open();
+                // Création de la commande  
+                sqlCde = new SqlCommand();
+                sqlCde.Connection = sqlConnect;
+                // Constitution Requête SQL  
+                string strSql = "Select * from Projet";
+                // Positionnement des propriétés  
+                sqlCde.CommandType = CommandType.Text;
+                sqlCde.CommandText = strSql;
+                // Exécution de la commande  
+                sqlRdr = sqlCde.ExecuteReader();
+                // Lecture des données du DataReader  
+                while (sqlRdr.Read())
+                {
+                    //int numE = sqlRdr.GetInt16(0);
+                    string nomE = sqlRdr.GetString(5);
+                    MessageBox.Show(nomE, "Connexion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                
+                // Fin des données  
+                sqlRdr.Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Erreur de connexion à la base", "Connexion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            finally { sqlConnect.Close(); }
         }
     }
 }
