@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GestionProjet.Metier
 {
-    class Client 
+    class Client :IEquatable<Client>
     {
         private string raisonSociale;
         public int CodeClient { get; set; }
@@ -35,9 +35,19 @@ namespace GestionProjet.Metier
 
 
         }
+
         public override string ToString()
         {
             return "Réf " + CodeClient + "," +RaisonSociale + "," + Adresse1 + "," + Adresse2 + "," + CP + "," + Ville + ", tél : " +Telephone + ", Mail : " +Mail;
+        }
+
+        public bool Equals(Client other)
+        {
+            if (other is Client)
+            {
+                return CodeClient == ((Client)other).CodeClient;
+            }
+            return false;
         }
     }
 }

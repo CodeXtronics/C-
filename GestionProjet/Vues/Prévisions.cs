@@ -25,11 +25,7 @@ namespace GestionProjet
         bool butModifierClick;
         bool butCreerClick;
 
-        SqlCommand sqlCde;
-        SqlDataReader sqlRdr;
-        SqlConnection sqlConnect;
         
-
 
         public Prévisions()
         {
@@ -44,15 +40,7 @@ namespace GestionProjet
             comboBoxProjets.SelectedItem = null;
             btnCreer.Enabled = false;
         }
-        private void ConnectSQLServ()
-        {
-            
-            sqlConnect = new SqlConnection();
-            sqlConnect.ConnectionString = "Data Source = (local);" + "Initial Catalog = GesProjet;" +
-                "Integrated Security = True;" + "Connection TimeOut=5";
-
-            
-        }
+        
 
         private void btnCreer_Click(object sender, EventArgs e)
         {
@@ -66,38 +54,9 @@ namespace GestionProjet
 
         private void comboBoxProjets_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if(comboBoxProjets.SelectedItem!=null)previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
-            //btnCreer.Enabled = true;
-            try
-            {
-                // Ouvre la connection. 
-                sqlConnect.Open();
-                // Création de la commande  
-                sqlCde = new SqlCommand();
-                sqlCde.Connection = sqlConnect;
-                // Constitution Requête SQL  
-                string strSql = "exec GetAllProjet";
-                // Positionnement des propriétés  
-                sqlCde.CommandType = CommandType.Text;
-                sqlCde.CommandText = strSql;
-                // Exécution de la commande  
-                sqlRdr = sqlCde.ExecuteReader();
-                // Lecture des données du DataReader  
-                while (sqlRdr.Read())
-                {
-                    //int numE = sqlRdr.GetInt16(0);
-                    string nomE = sqlRdr.GetString(5);
-                    MessageBox.Show(nomE, "Connexion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
-                // Fin des données  
-                sqlRdr.Close();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Erreur de connexion à la base", "Connexion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            finally { sqlConnect.Close(); }
+            if (comboBoxProjets.SelectedItem != null) previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+            btnCreer.Enabled = true;
+            
 
         }
 
@@ -112,32 +71,49 @@ namespace GestionProjet
         {
             if (butModifierClick)
             {
-                //if(Previsio comboBoxQualification.SelectedItem)
-                ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif = (Qualification)comboBoxQualification.SelectedItem;
-                nbJours.Value = numericUpDownNbJours.Value;
                 
-                butModifierClick = false;
-                grpboxPrevision.Visible = false;
-                comboBoxProjets.Enabled = true;
-                btnCreer.Enabled = true;
+                if (DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions().Find(p => p.LaQualif.Equals(comboBoxQualification.SelectedItem)) == null 
+                    || (Qualification)comboBoxQualification.SelectedItem == ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif)
+                {
+                    ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif = (Qualification)comboBoxQualification.SelectedItem;
+                    nbJours.Value = numericUpDownNbJours.Value;
 
-                //Mets  a jours les données du databinding prevision.
-                previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
-                previsionBindingSource.ResetBindings(true);
+                    butModifierClick = false;
+                    grpboxPrevision.Visible = false;
+                    comboBoxProjets.Enabled = true;
+                    btnCreer.Enabled = true;
+
+                    //Mets  a jours les données du databinding prevision.
+                    previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+                    previsionBindingSource.ResetBindings(true);
+                }
+                else
+                {
+                    MessageBox.Show("Qualification déjà présente");
+                }
+                    
+
 
             }
             else if (butCreerClick)
             {
-                DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].AddPrevision(new Prevision((Qualification)comboBoxQualification.SelectedItem, (short)numericUpDownNbJours.Value));
-                butCreerClick = false;
-                
-                grpboxPrevision.Visible = false;
-                comboBoxProjets.Enabled = true;
-                btnCreer.Enabled = true;
+                if (DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions().Find(p => p.LaQualif.Equals(comboBoxQualification.SelectedItem)) == null)
+                {
+                    DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].AddPrevision(new Prevision((Qualification)comboBoxQualification.SelectedItem, (short)numericUpDownNbJours.Value));
+                    butCreerClick = false;
 
-                //Mets  a jours les données du databinding prevision.
-                previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
-                previsionBindingSource.ResetBindings(true);
+                    grpboxPrevision.Visible = false;
+                    comboBoxProjets.Enabled = true;
+                    btnCreer.Enabled = true;
+
+                    //Mets  a jours les données du databinding prevision.
+                    previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+                    previsionBindingSource.ResetBindings(true);
+                }
+                else
+                {
+                    MessageBox.Show("Qualification déjà présente");
+                }
             }
         }
 
@@ -167,38 +143,9 @@ namespace GestionProjet
 
         private void btnConnection_Click(object sender, EventArgs e)
         {
-           
+            
             // création de la connection 
-            try
-            {
-                // Ouvre la connection. 
-                sqlConnect.Open();
-                // Création de la commande  
-                sqlCde = new SqlCommand();
-                sqlCde.Connection = sqlConnect;
-                // Constitution Requête SQL  
-                string strSql = "Select * from Projet";
-                // Positionnement des propriétés  
-                sqlCde.CommandType = CommandType.Text;
-                sqlCde.CommandText = strSql;
-                // Exécution de la commande  
-                sqlRdr = sqlCde.ExecuteReader();
-                // Lecture des données du DataReader  
-                while (sqlRdr.Read())
-                {
-                    //int numE = sqlRdr.GetInt16(0);
-                    string nomE = sqlRdr.GetString(5);
-                    MessageBox.Show(nomE, "Connexion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                
-                // Fin des données  
-                sqlRdr.Close();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Erreur de connexion à la base", "Connexion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            finally { sqlConnect.Close(); }
+           
         }
     }
 }

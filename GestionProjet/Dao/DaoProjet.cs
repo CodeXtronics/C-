@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace GestionProjet.Dao
 {
@@ -15,7 +16,7 @@ namespace GestionProjet.Dao
         // pas de constructeurs
         // cette classe n'existe que pour accéder aux données
 
-        private static List<ProjetForfait> Projets;
+        public static List<ProjetForfait> Projets;
         private static List<Client> Clients;	
         private static List<Collaborateur> Collaborateurs;	
         private static List<Qualification> Qualifications;
@@ -52,7 +53,56 @@ namespace GestionProjet.Dao
         }
         public static List<Client> GetAllClients()
         {
-          return Clients;
+            using (SqlConnection sqlConnect = ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+                        string strSql = "GetAllClient";
+                        //// Positionnement des propriétés  
+                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCde.CommandText = strSql;
+
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+                        // Lecture des données du DataReader 
+                        Clients = new List<Client>();
+                        while (sqlRdr.Read())
+                        {
+                            Client clt = new Client()
+                            {
+                                CodeClient = sqlRdr.GetInt32(0),
+                                RaisonSociale = sqlRdr.GetString(1),
+                                Adresse1 = sqlRdr.GetString(2),
+                                Adresse2 = sqlRdr[3].ToString(),
+                                CP = sqlRdr.GetString(4),
+                                Ville = sqlRdr.GetString(5),
+                                Telephone = sqlRdr.GetString(6),
+                                Mail = sqlRdr[7].ToString()
+                            };
+                            Clients.Add(clt);
+                        }
+
+                        // Fin des données  
+                        sqlRdr.Close();
+                        return Clients;
+                    }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+                
+            }
+            
         }
         public static List<Collaborateur> GetAllCollaborateurs()
         {
@@ -73,12 +123,88 @@ namespace GestionProjet.Dao
                 return false;
             }             
         }
+
+
+        public static SqlConnection ConnectSQLServ()
+        {
+            SqlCommand sqlCde;
+            
+            SqlConnection sqlConnect;
+
+            sqlConnect = new SqlConnection();
+            sqlConnect.ConnectionString = "Data Source = (local);" + "Initial Catalog = GesProjet;" +
+                "Integrated Security = True;" + "Connection TimeOut=5";
+            try
+            {
+                // Ouvre la connection.
+                sqlConnect.Open();
+                return sqlConnect;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally { sqlConnect.Close(); }
+
+        }
         public static List<ProjetForfait> GetAllProjets()
         {
-            return Projets;
+            using (SqlConnection sqlConnect = ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+                        string strSql = "Select * from Projet";
+                        //// Positionnement des propriétés  
+                        
+                        sqlCde.CommandText = strSql;
+                        //sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        //sqlCde.CommandText = "GetAllProjetForfaits";
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+                        // Lecture des données du DataReader 
+                        Projets = new List<ProjetForfait>();
+                        while (sqlRdr.Read())
+                        {
+                            ProjetForfait proj = new ProjetForfait()
+                            {
+                                CodeProjet = sqlRdr.GetInt32(0),
+                                NomProjet = sqlRdr.GetString(1),
+                                DDebut = sqlRdr.GetDateTime(2),
+                                DFin = sqlRdr.GetDateTime(3),
+                                Contact = sqlRdr[4].ToString(),
+                                MailContact = sqlRdr[5].ToString(),
+                                LeClient = new Client()
+                                {
+                                    CodeClient=sqlRdr.GetInt32(6)
+                                }
+                            };
+                            Projets.Add(proj);
+                            
+                            
+                        }
+
+                        // Fin des données  
+                        sqlRdr.Close();
+                        return Projets;
+                    }
+                    catch (Exception ex)
+                    {
+                        return  null;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }
+                
+                    
         }
-
-
         public static void Init()
         {
 

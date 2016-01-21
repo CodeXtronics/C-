@@ -17,6 +17,17 @@ namespace GestionProjet.Metier
             Libelle = l;
             PvJournee = pj;
         }
+        public override bool Equals(object obj)
+        {
+            if(obj is Qualification)
+            {
+                return Libelle == ((Qualification)obj).Libelle;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public override string ToString()
         {
             return CodeQualif + "," + Libelle + "," + PvJournee;

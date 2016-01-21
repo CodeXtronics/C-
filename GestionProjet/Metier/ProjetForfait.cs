@@ -11,7 +11,7 @@ namespace GestionProjet.Metier
 
         public decimal MontantContrat{ get; set; }       
         public Collaborateur ChefDeProjet{ get; set; }
-        private List<Prevision> prevision;
+        public List<Prevision> prevision;
         public Penalite PenaliteOuiNon { get; set; }
 
         public List<Prevision> GetPrevisions()

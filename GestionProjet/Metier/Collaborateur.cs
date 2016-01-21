@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GestionProjet.Metier
 {
-    class Collaborateur
+    class Collaborateur :IEquatable<Collaborateur>
     {
         public int CodeColl { get; set; }
         public string Nom { get; set; }
@@ -24,9 +24,19 @@ namespace GestionProjet.Metier
             PrJournalier = prixJrn;
             LaQualif = laQualif;
         }
+
         public override string ToString()
         {
             return "N° "+CodeColl+", "+Nom + " " +PreNom + ", Date d'embauche : " +DEmbauche + ", Prix journalier : " +PrJournalier + ", Qualification " +LaQualif;
+        }
+
+        public bool Equals(Collaborateur other)
+        {
+            if (other is Collaborateur)
+            {
+                return CodeColl == ((Collaborateur)other).CodeColl;
+            }
+            return false;
         }
     }
 }

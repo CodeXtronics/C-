@@ -34,6 +34,7 @@ namespace GestionProjet
             
             comboBoxClient.DataSource = DaoProjet.GetAllClients();
             comboBoxResponsable.DataSource = DaoProjet.GetAllCollaborateurs();
+            //projetForfaitBindingSource.DataSource = DaoProjet.GetAllProjets();
             projetForfaitBindingSource.DataSource = DaoProjet.GetAllProjets();
             ControlBox = false;
             Initialisation();
