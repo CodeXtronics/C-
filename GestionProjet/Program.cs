@@ -20,8 +20,8 @@ namespace GestionProjet
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Dao.DaoProjet.Init();
-            //Application.Run(new FrmCreationProjet());
-            Application.Run(new Prévisions());
+            Application.Run(new FrmCreationProjet());
+            //Application.Run(new Prévisions());
         }
     }
 }

@@ -31,11 +31,9 @@ namespace GestionProjet
 
         private void FrmCreationProjet_Load(object sender, EventArgs e)
         {
-            
-            comboBoxClient.DataSource = DaoProjet.GetAllClients();
-            comboBoxResponsable.DataSource = DaoProjet.GetAllCollaborateurs();
-            //projetForfaitBindingSource.DataSource = DaoProjet.GetAllProjets();
             projetForfaitBindingSource.DataSource = DaoProjet.GetAllProjets();
+            clientBindingSource.DataSource = DaoProjet.GetAllClients();
+            collaborateurBindingSource.DataSource = DaoProjet.GetAllCollaborateurs();
             ControlBox = false;
             Initialisation();
             
@@ -64,28 +62,59 @@ namespace GestionProjet
 
         private void btnValider_Click(object sender, EventArgs e)
         {
-            Random rdom = new Random();
+            DateTime datedebut;
+            DateTime datefin;
             
-
-            if (txtboxNomProjet.Text != string.Empty && msktxtboxDateDebut.MaskCompleted 
-                && msktxtboxDateFin.MaskCompleted && txtboxMontantContrat.Text != string.Empty)
+            if (msktxtboxDateDebut.MaskCompleted
+                && msktxtboxDateFin.MaskCompleted)
             {
+                datedebut = Convert.ToDateTime(msktxtboxDateDebut.Text);
+                datefin = Convert.ToDateTime(msktxtboxDateFin.Text);
+                
+                if (datefin < datedebut)
+                {
+                    errorProviderObligatoire.SetError(msktxtboxDateFin, "Date de fin de projet < date de debut de projet");
+                    
+                }
+
+            }
+            else if (txtboxNomProjet.Text == string.Empty)
+            {
+                MessageBox.Show("Nom de projet obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtboxNomProjet.Focus();
+            }
+            else if (txtboxMontantContrat.Text == string.Empty)
+            {
+                MessageBox.Show("Montant obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (!msktxtboxDateDebut.MaskCompleted)
+            {
+                MessageBox.Show("Date de début obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                msktxtboxDateDebut.Focus();
+            }
+            else if (!msktxtboxDateFin.MaskCompleted)
+            {
+                MessageBox.Show("Date de fin obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                msktxtboxDateFin.Focus();
+            }
+
+            else
+            {
+                Random rdom = new Random();
+                string nom = txtboxNomProjet.Text;
+                datedebut = Convert.ToDateTime(msktxtboxDateDebut.Text);
+                datefin = Convert.ToDateTime(msktxtboxDateFin.Text);
+                Client clt = (Client)comboBoxClient.SelectedItem;
+                int montant = Convert.ToInt32(txtboxMontantContrat.Text);
+                Collaborateur colla = (Collaborateur)comboBoxResponsable.SelectedItem;
+                ProjetForfait proj = new ProjetForfait(0, nom, datedebut, datefin, clt, msktxtboxContact.Text, txtboxMailContact.Text, montant, radbutPenalOui.Checked, colla);
+
                 if (butCreerClick)
                 {
-                    int cod = rdom.Next(9999);
-                    string nom = txtboxNomProjet.Text;
-                    DateTime datedebut = Convert.ToDateTime(msktxtboxDateDebut.Text);
-                    DateTime datefin = Convert.ToDateTime(msktxtboxDateFin.Text);
-                    Client clt = (Client)comboBoxClient.SelectedItem;
-                    int montant = Convert.ToInt32(txtboxMontantContrat.Text);
-                    Collaborateur colla = (Collaborateur)comboBoxResponsable.SelectedItem;
-                    ProjetForfait proj = new ProjetForfait(cod, nom, datedebut, datefin, clt, msktxtboxContact.Text, txtboxMailContact.Text, montant, radbutPenalOui.Checked, colla);
-
+                    proj.CodeProjet = rdom.Next(9999);
                     if (!DaoProjet.AddProjet(proj))
                     {
                         MessageBox.Show("Nom de projet déjâ présent");
-
-
                     }
                     else
                     {
@@ -101,14 +130,7 @@ namespace GestionProjet
                 }
                 else if (butModifierClick)
                 {
-                    int cod = projModif.CodeProjet;
-                    string nom = txtboxNomProjet.Text;
-                    DateTime datedebut = Convert.ToDateTime(msktxtboxDateDebut.Text);
-                    DateTime datefin = Convert.ToDateTime(msktxtboxDateFin.Text);
-                    Client clt = (Client)comboBoxClient.SelectedItem;
-                    int montant = Convert.ToInt32(txtboxMontantContrat.Text);
-                    Collaborateur colla = (Collaborateur)comboBoxResponsable.SelectedItem;
-                    ProjetForfait proj = new ProjetForfait(cod, nom, datedebut, datefin, clt, msktxtboxContact.Text, txtboxMailContact.Text, montant, radbutPenalOui.Checked, colla);
+                    proj.CodeProjet = projModif.CodeProjet;
 
                     DaoProjet.UpdProjet(indexModif, proj);
                     BoxEnable(false);
@@ -118,61 +140,44 @@ namespace GestionProjet
                     InitDataBindingsBox(false);
                     btnModifier.Enabled = true;
                 }
-
-
             }
            
-            else if(txtboxNomProjet.Text == string.Empty)
-            {
-                MessageBox.Show("Nom de projet obligatoire","Information manquante",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                txtboxNomProjet.Focus();    
-            }
-            else
-            {
-                MessageBox.Show("Date de debut,Date de fin ou Montant", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            
+
         }
          
         private void msktxtboxDateDebut_Validating_1(object sender, CancelEventArgs e)
         {
-            
+
             DateTime result;
-            if (msktxtboxDateDebut.MaskCompleted && DateTime.TryParse(msktxtboxDateDebut.Text,out result))
+            if (msktxtboxDateDebut.MaskCompleted && DateTime.TryParse(msktxtboxDateDebut.Text, out result))
             {
                 msktxtboxDateDebut.Text = result.ToString();
-                errorProviderObligatoire.Clear();
-                
+                errorProviderObligatoire.SetError(msktxtboxDateDebut, string.Empty);
+                e.Cancel = false;
+
             }
             else
             {
-                
+                e.Cancel = true;
                 errorProviderObligatoire.SetError(msktxtboxDateDebut, "Date pas complete format dd/mm/yyyy");
-                
+
             }
         }
 
         private void msktxtboxDateFin_Validating(object sender, CancelEventArgs e)
         {
-            
+
             DateTime result;
             if (msktxtboxDateFin.MaskCompleted && DateTime.TryParse(msktxtboxDateFin.Text, out result))
             {
-
-                if (!(result<=Convert.ToDateTime(msktxtboxDateDebut.Text)))
-                {
-                    msktxtboxDateFin.Text = result.ToString();
-                    errorProviderObligatoire.SetError(msktxtboxDateFin, string.Empty);                    
-                }
-                else
-                {
-                    errorProviderObligatoire.SetError(msktxtboxDateFin, "Date de fin de projet < date de debut de projet");
-                }
+                msktxtboxDateFin.Text = result.ToString();
+                errorProviderObligatoire.SetError(msktxtboxDateFin, string.Empty);
+                e.Cancel = false;
             }
             else
             {
                 errorProviderObligatoire.SetError(msktxtboxDateFin, "Date pas complete format dd/mm/yyyy");
-                
+                e.Cancel = true;
             }
         }
 
@@ -250,8 +255,20 @@ namespace GestionProjet
                 grpboxForfait.Visible = true;
                 grpboxProjet.Visible = true;
                 btnSupprimer.Enabled = true;
+                if (((ProjetForfait)comboBoxProjets.SelectedItem).PenaliteOuiNon == Penalite.Oui)
+                {
+                    radbutPenalOui.Checked = true;
+                    radbutPenalNon.Checked = false;
+                }
+                else
+                {
+                    radbutPenalOui.Checked = false;
+                    radbutPenalNon.Checked = true;
+                }
             }
             btnModifier.Enabled = true;
+            
+           
         }
 
         private void btnSupprimer_Click(object sender, EventArgs e)

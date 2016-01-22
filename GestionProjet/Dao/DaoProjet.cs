@@ -41,7 +41,40 @@ namespace GestionProjet.Dao
         }
         public static bool DelProjet(ProjetForfait pr)
         {
-            if (Projets.Find(p => p.Equals(pr,true)) != null)
+            //using (SqlConnection sqlConnect = ConnectSQLServ())
+            //{
+            //    using (SqlCommand sqlCde = new SqlCommand())
+            //    {
+            //        try
+            //        {
+            //            // Ouvre la connection. 
+            //            sqlConnect.Open();
+            //            // Création de la commande  
+            //            SqlDataReader sqlRdr;
+            //            sqlCde.Connection = sqlConnect;
+            //            // Constitution Requête SQL  
+
+            //            //sqlCde.CommandText = strSql;
+            //            sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+            //            sqlCde.CommandText = "GetAllProjetForfaits";
+            //            // Exécution de la commande  
+            //            sqlRdr = sqlCde.ExecuteReader();
+            //            // Lecture des données du DataReader 
+
+
+
+
+
+
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            return null;
+            //        }
+            //        finally { sqlConnect.Close(); }
+            //    }
+            //}
+            if (Projets.Find(p => p.Equals(pr, true)) != null)
             {
                 Projets.Remove(pr);
                 return true;
@@ -50,6 +83,172 @@ namespace GestionProjet.Dao
             {
                 return false;
             }
+        }
+        
+      
+        public static bool AddProjet(ProjetForfait pr)
+        {
+
+            if (Projets.Find(p => p.Equals(pr,true)) == null)
+            {
+                Projets.Add(pr);
+                
+                
+                return true;
+            }
+            else
+            {
+                return false;
+            }             
+        }
+
+
+        public static SqlConnection ConnectSQLServ()
+        {                       
+            SqlConnection sqlConnect;
+
+            sqlConnect = new SqlConnection();
+            sqlConnect.ConnectionString = "Data Source = (local);" + "Initial Catalog = GesProjet;" +
+                "Integrated Security = True;" + "Connection TimeOut=5";
+            try
+            {
+                // Ouvre la connection.
+                sqlConnect.Open();
+                return sqlConnect;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally { sqlConnect.Close(); }
+
+        }
+        public static List<ProjetForfait> GetAllProjets()
+        {
+            using (SqlConnection sqlConnect = ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+                        //string strSql = "Select * from Projet";
+                        //// Positionnement des propriétés  
+                        
+                        //sqlCde.CommandText = strSql;
+                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCde.CommandText = "GetAllProjetForfaits";
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+                        // Lecture des données du DataReader 
+                        Projets = new List<ProjetForfait>();
+                        while (sqlRdr.Read())
+                        {
+                            Penalite pen;
+                            if (sqlRdr.GetBoolean(8))pen = Penalite.Oui;
+                            else pen = Penalite.Non;
+                            ProjetForfait proj = new ProjetForfait()
+                            {
+                                CodeProjet = sqlRdr.GetInt32(0),
+                                NomProjet = sqlRdr.GetString(1),
+                                DDebut = sqlRdr.GetDateTime(2),
+                                DFin = sqlRdr.GetDateTime(3),
+                                Contact = sqlRdr[4].ToString(),
+                                MailContact = sqlRdr[5].ToString(),
+                                LeClient = new Client()
+                                {
+                                    CodeClient=sqlRdr.GetInt32(6)
+                                },
+                                MontantContrat = sqlRdr.GetDecimal(7),
+                                PenaliteOuiNon = pen,
+                                ChefDeProjet = new Collaborateur()
+                                {
+                                    CodeColl = sqlRdr.GetInt32(9)
+
+                                }
+                                    
+                            };
+                            Projets.Add(proj);
+                            
+                            
+                        }
+
+                        // Fin des données  
+                        sqlRdr.Close();
+                        return Projets;
+                    }
+                    catch (Exception ex)
+                    {
+                        return  null;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }
+                
+                    
+        }
+        public static List<Collaborateur> GetAllCollaborateurs()
+        {
+            using (SqlConnection sqlConnect = ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+                        //string strSql = "Select * from Projet";
+                        //// Positionnement des propriétés  
+
+                        //sqlCde.CommandText = strSql;
+                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCde.CommandText = "GetAllCollaborateur";
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+                        // Lecture des données du DataReader 
+                        Collaborateurs = new List<Collaborateur>();
+                        while (sqlRdr.Read())
+                        {
+
+                            Collaborateur coll = new Collaborateur()
+                            {
+                                CodeColl = sqlRdr.GetInt32(0),
+                                LaQualif = new Qualification()
+                                {
+                                    CodeQualif = (sbyte)sqlRdr.GetByte(1)
+                                },
+                                Nom = sqlRdr.GetString(2),
+                                PreNom = sqlRdr.GetString(3),
+                                DEmbauche = sqlRdr.GetDateTime(4),
+                                PrJournalier = sqlRdr.GetDecimal(5)
+                               
+
+                            };
+                            Collaborateurs.Add(coll);
+
+
+                        }
+
+                        // Fin des données  
+                        sqlRdr.Close();
+                        return Collaborateurs;
+                    }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }            
         }
         public static List<Client> GetAllClients()
         {
@@ -65,8 +264,8 @@ namespace GestionProjet.Dao
                         SqlDataReader sqlRdr;
                         sqlCde.Connection = sqlConnect;
                         // Constitution Requête SQL  
-                        string strSql = "GetAllClient";
-                        //// Positionnement des propriétés  
+                        string strSql = "GetAllClients";
+                        // Positionnement des propriétés  
                         sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
                         sqlCde.CommandText = strSql;
 
@@ -100,110 +299,9 @@ namespace GestionProjet.Dao
                     }
                     finally { sqlConnect.Close(); }
                 }
-                
+
             }
-            
-        }
-        public static List<Collaborateur> GetAllCollaborateurs()
-        {
-            return Collaborateurs;
-        }
-        public static bool AddProjet(ProjetForfait pr)
-        {
 
-            if (Projets.Find(p => p.Equals(pr,true)) == null)
-            {
-                Projets.Add(pr);
-                
-                
-                return true;
-            }
-            else
-            {
-                return false;
-            }             
-        }
-
-
-        public static SqlConnection ConnectSQLServ()
-        {
-            SqlCommand sqlCde;
-            
-            SqlConnection sqlConnect;
-
-            sqlConnect = new SqlConnection();
-            sqlConnect.ConnectionString = "Data Source = (local);" + "Initial Catalog = GesProjet;" +
-                "Integrated Security = True;" + "Connection TimeOut=5";
-            try
-            {
-                // Ouvre la connection.
-                sqlConnect.Open();
-                return sqlConnect;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-            finally { sqlConnect.Close(); }
-
-        }
-        public static List<ProjetForfait> GetAllProjets()
-        {
-            using (SqlConnection sqlConnect = ConnectSQLServ())
-            {
-                using (SqlCommand sqlCde = new SqlCommand())
-                {
-                    try
-                    {
-                        // Ouvre la connection. 
-                        sqlConnect.Open();
-                        // Création de la commande  
-                        SqlDataReader sqlRdr;
-                        sqlCde.Connection = sqlConnect;
-                        // Constitution Requête SQL  
-                        string strSql = "Select * from Projet";
-                        //// Positionnement des propriétés  
-                        
-                        sqlCde.CommandText = strSql;
-                        //sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
-                        //sqlCde.CommandText = "GetAllProjetForfaits";
-                        // Exécution de la commande  
-                        sqlRdr = sqlCde.ExecuteReader();
-                        // Lecture des données du DataReader 
-                        Projets = new List<ProjetForfait>();
-                        while (sqlRdr.Read())
-                        {
-                            ProjetForfait proj = new ProjetForfait()
-                            {
-                                CodeProjet = sqlRdr.GetInt32(0),
-                                NomProjet = sqlRdr.GetString(1),
-                                DDebut = sqlRdr.GetDateTime(2),
-                                DFin = sqlRdr.GetDateTime(3),
-                                Contact = sqlRdr[4].ToString(),
-                                MailContact = sqlRdr[5].ToString(),
-                                LeClient = new Client()
-                                {
-                                    CodeClient=sqlRdr.GetInt32(6)
-                                }
-                            };
-                            Projets.Add(proj);
-                            
-                            
-                        }
-
-                        // Fin des données  
-                        sqlRdr.Close();
-                        return Projets;
-                    }
-                    catch (Exception ex)
-                    {
-                        return  null;
-                    }
-                    finally { sqlConnect.Close(); }
-                }
-            }
-                
-                    
         }
         public static void Init()
         {

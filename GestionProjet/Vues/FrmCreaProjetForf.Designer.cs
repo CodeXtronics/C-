@@ -365,10 +365,12 @@
             // radbutPenalNon
             // 
             this.radbutPenalNon.AutoSize = true;
+            this.radbutPenalNon.Checked = true;
             this.radbutPenalNon.Location = new System.Drawing.Point(7, 29);
             this.radbutPenalNon.Name = "radbutPenalNon";
             this.radbutPenalNon.Size = new System.Drawing.Size(45, 17);
             this.radbutPenalNon.TabIndex = 0;
+            this.radbutPenalNon.TabStop = true;
             this.radbutPenalNon.Text = "Non";
             this.radbutPenalNon.UseVisualStyleBackColor = true;
             // 

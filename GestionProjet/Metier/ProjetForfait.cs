@@ -37,7 +37,7 @@ namespace GestionProjet.Metier
 
 
         public ProjetForfait() { }
-        public ProjetForfait(int co, string n, DateTime dDebP, DateTime dFinP, Client client,string cont,string ml, int montContract, bool ouinon, Collaborateur colla)
+        public ProjetForfait(int co, string n, DateTime dDebP, DateTime dFinP, Client client,string cont,string ml, decimal montContract, bool ouinon, Collaborateur colla)
         {            
             this.CodeProjet = co;
             this.NomProjet = n;
@@ -58,7 +58,7 @@ namespace GestionProjet.Metier
             }
             this.prevision = new List<Prevision> { } ;   
         }
-        public ProjetForfait(int co, string n, DateTime dDebP, DateTime dFinP, Client client, string cont, string ml, int montContract, bool ouinon, Collaborateur collaborateur, List<Prevision> list)
+        public ProjetForfait(int co, string n, DateTime dDebP, DateTime dFinP, Client client, string cont, string ml, decimal montContract, bool ouinon, Collaborateur collaborateur, List<Prevision> list)
         {
             this.CodeProjet = co;
             this.NomProjet = n;

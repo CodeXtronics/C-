@@ -5,12 +5,13 @@ using System.Text;
 
 namespace GestionProjet.Metier
 {
-    class Qualification
+    class Qualification:IEquatable<object>
     {
         public sbyte CodeQualif { get; set; }
         public string Libelle { get; set; }
         public decimal PvJournee { get; set; }
         public Qualification Self { get { return this; }  }
+        public Qualification() { }
         public Qualification(sbyte cq,string l,decimal pj)
         {
             CodeQualif = cq;
