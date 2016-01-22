@@ -41,48 +41,50 @@ namespace GestionProjet.Dao
         }
         public static bool DelProjet(ProjetForfait pr)
         {
-            //using (SqlConnection sqlConnect = ConnectSQLServ())
+            using (SqlConnection sqlConnect = ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+
+                        //sqlCde.CommandText = strSql;
+                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCde.CommandText = "DelProjet";
+                        //affectation du parametre à la procédure stockée
+                        sqlCde.Parameters.Add(new SqlParameter("@IdProjet", System.Data.SqlDbType.Int)).Value = pr.CodeProjet;
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+
+
+                        return true;
+
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }
+            //if (Projets.Find(p => p.Equals(pr, true)) != null)
             //{
-            //    using (SqlCommand sqlCde = new SqlCommand())
-            //    {
-            //        try
-            //        {
-            //            // Ouvre la connection. 
-            //            sqlConnect.Open();
-            //            // Création de la commande  
-            //            SqlDataReader sqlRdr;
-            //            sqlCde.Connection = sqlConnect;
-            //            // Constitution Requête SQL  
-
-            //            //sqlCde.CommandText = strSql;
-            //            sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
-            //            sqlCde.CommandText = "GetAllProjetForfaits";
-            //            // Exécution de la commande  
-            //            sqlRdr = sqlCde.ExecuteReader();
-            //            // Lecture des données du DataReader 
-
-
-
-
-
-
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            return null;
-            //        }
-            //        finally { sqlConnect.Close(); }
-            //    }
+            //    Projets.Remove(pr);
+            //    return true;
             //}
-            if (Projets.Find(p => p.Equals(pr, true)) != null)
-            {
-                Projets.Remove(pr);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            //else
+            //{
+            //    return false;
+            //}
         }
         
       
