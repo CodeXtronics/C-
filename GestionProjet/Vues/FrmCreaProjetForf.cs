@@ -64,21 +64,21 @@ namespace GestionProjet
         {
             DateTime datedebut;
             DateTime datefin;
-            
-            if (msktxtboxDateDebut.MaskCompleted
-                && msktxtboxDateFin.MaskCompleted)
-            {
-                datedebut = Convert.ToDateTime(msktxtboxDateDebut.Text);
-                datefin = Convert.ToDateTime(msktxtboxDateFin.Text);
-                
-                if (datefin < datedebut)
-                {
-                    errorProviderObligatoire.SetError(msktxtboxDateFin, "Date de fin de projet < date de debut de projet");
-                    
-                }
 
-            }
-            else if (txtboxNomProjet.Text == string.Empty)
+            //if (msktxtboxDateDebut.MaskCompleted
+            //    && msktxtboxDateFin.MaskCompleted)
+            //{
+            //    datedebut = Convert.ToDateTime(msktxtboxDateDebut.Text);
+            //    datefin = Convert.ToDateTime(msktxtboxDateFin.Text);
+
+            //    if (datefin < datedebut)
+            //    {
+            //        errorProviderObligatoire.SetError(msktxtboxDateFin, "Date de fin de projet < date de debut de projet");
+
+            //    }
+
+            //}
+            if (txtboxNomProjet.Text == string.Empty)
             {
                 MessageBox.Show("Nom de projet obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtboxNomProjet.Focus();
@@ -100,45 +100,56 @@ namespace GestionProjet
 
             else
             {
-                Random rdom = new Random();
-                string nom = txtboxNomProjet.Text;
                 datedebut = Convert.ToDateTime(msktxtboxDateDebut.Text);
                 datefin = Convert.ToDateTime(msktxtboxDateFin.Text);
-                Client clt = (Client)comboBoxClient.SelectedItem;
-                int montant = Convert.ToInt32(txtboxMontantContrat.Text);
-                Collaborateur colla = (Collaborateur)comboBoxResponsable.SelectedItem;
-                ProjetForfait proj = new ProjetForfait(0, nom, datedebut, datefin, clt, msktxtboxContact.Text, txtboxMailContact.Text, montant, radbutPenalOui.Checked, colla);
 
-                if (butCreerClick)
+                if (datefin < datedebut)
                 {
-                    proj.CodeProjet = rdom.Next(9999);
-                    if (!DaoProjet.AddProjet(proj))
-                    {
-                        MessageBox.Show("Nom de projet déjâ présent");
-                    }
-                    else
-                    {
-                        MessageBox.Show(proj.ToString());
-                        //projetForfaitBindingSource.Add(proj);
-                        BoxEnable(false);
-                        comboBoxProjets.Enabled = true;
-                        //projetForfaitBindingSource.ResetBindings(true);
-                        InitDataBindingsBox(false);
-                    }
-                    butCreerClick = false;
-                    btnSupprimer.Enabled = true;
+                    errorProviderObligatoire.SetError(msktxtboxDateFin, "Date de fin de projet < date de debut de projet");
+
                 }
-                else if (butModifierClick)
+                else
                 {
-                    proj.CodeProjet = projModif.CodeProjet;
 
-                    DaoProjet.UpdProjet(indexModif, proj);
-                    BoxEnable(false);
-                    butModifierClick = false;
-                    comboBoxProjets.Enabled = true;
-                    projetForfaitBindingSource.ResetBindings(true);
-                    InitDataBindingsBox(false);
-                    btnModifier.Enabled = true;
+
+                    Random rdom = new Random();
+                    string nom = txtboxNomProjet.Text;
+                    Client clt = (Client)comboBoxClient.SelectedItem;
+                    decimal montant = Convert.ToDecimal (txtboxMontantContrat.Text);
+                    Collaborateur colla = (Collaborateur)comboBoxResponsable.SelectedItem;
+                    ProjetForfait proj = new ProjetForfait(0, nom, datedebut, datefin, clt, msktxtboxContact.Text, txtboxMailContact.Text, montant, radbutPenalOui.Checked, colla);
+
+                    if (butCreerClick)
+                    {
+                        proj.CodeProjet = rdom.Next(9999);
+                        if (!DaoProjet.AddProjet(proj))
+                        {
+                            MessageBox.Show("Nom de projet déjâ présent");
+                        }
+                        else
+                        {
+                            MessageBox.Show(proj.ToString());
+                            //projetForfaitBindingSource.Add(proj);
+                            BoxEnable(false);
+                            comboBoxProjets.Enabled = true;
+                            //projetForfaitBindingSource.ResetBindings(true);
+                            InitDataBindingsBox(false);
+                        }
+                        butCreerClick = false;
+                        btnSupprimer.Enabled = true;
+                    }
+                    else if (butModifierClick)
+                    {
+                        proj.CodeProjet = projModif.CodeProjet;
+
+                        DaoProjet.UpdProjet(indexModif, proj);
+                        BoxEnable(false);
+                        butModifierClick = false;
+                        comboBoxProjets.Enabled = true;
+                        projetForfaitBindingSource.ResetBindings(true);
+                        InitDataBindingsBox(false);
+                        btnModifier.Enabled = true;
+                    }
                 }
             }
            
