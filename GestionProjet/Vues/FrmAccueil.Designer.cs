@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAccueil));
             this.statusStripDate = new System.Windows.Forms.StatusStrip();
             this.tStripDatenow = new System.Windows.Forms.ToolStripStatusLabel();
@@ -43,6 +44,7 @@
             this.horizontaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.verticaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.statusStripDate.SuspendLayout();
             this.toolStripOption.SuspendLayout();
             this.SuspendLayout();
@@ -117,14 +119,14 @@
             // gérerProjetsToolStripMenuItem
             // 
             this.gérerProjetsToolStripMenuItem.Name = "gérerProjetsToolStripMenuItem";
-            this.gérerProjetsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.gérerProjetsToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.gérerProjetsToolStripMenuItem.Text = "Gérer projets";
             this.gérerProjetsToolStripMenuItem.Click += new System.EventHandler(this.gérerProjetsToolStripMenuItem_Click);
             // 
             // prévisionnelToolStripMenuItem
             // 
             this.prévisionnelToolStripMenuItem.Name = "prévisionnelToolStripMenuItem";
-            this.prévisionnelToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.prévisionnelToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.prévisionnelToolStripMenuItem.Text = "Prévisionnel";
             this.prévisionnelToolStripMenuItem.Click += new System.EventHandler(this.prévisionnelToolStripMenuItem_Click);
             // 
@@ -168,6 +170,11 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(132, 6);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // FrmAccueil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -205,5 +212,6 @@
         private System.Windows.Forms.ToolStripMenuItem horizontaleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem verticaleToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

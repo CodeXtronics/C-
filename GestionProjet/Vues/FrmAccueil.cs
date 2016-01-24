@@ -21,7 +21,7 @@ namespace GestionProjet.Vues
 
         private void FrmAccueil_Load(object sender, EventArgs e)
         {
-            tStripDatenow.Text = Convert.ToString(DateTime.Now);            
+                        
         }
 
         private void sidentifierToolStripMenuItem_Click(object sender, EventArgs e)
@@ -88,6 +88,12 @@ namespace GestionProjet.Vues
                 prévisionnelToolStripMenuItem.Enabled = true;
             }
             
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            //statusStripDate.Text = DateTime.Now.ToShortTimeString();
+            tStripDatenow.Text = DateTime.Now.ToString();
         }
     }
 }
