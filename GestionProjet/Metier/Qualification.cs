@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GestionProjet.Metier
 {
-    class Qualification:IEquatable<object>
+    class Qualification
     {
         public sbyte CodeQualif { get; set; }
         public string Libelle { get; set; }
@@ -22,7 +22,7 @@ namespace GestionProjet.Metier
         {
             if(obj is Qualification)
             {
-                return Libelle == ((Qualification)obj).Libelle;
+                return CodeQualif == ((Qualification)obj).CodeQualif;
             }
             else
             {

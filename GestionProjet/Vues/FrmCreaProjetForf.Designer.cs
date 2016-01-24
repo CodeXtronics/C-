@@ -50,6 +50,8 @@
             this.txtboxNomProjet = new System.Windows.Forms.TextBox();
             this.btnValider = new System.Windows.Forms.Button();
             this.grpboxForfait = new System.Windows.Forms.GroupBox();
+            this.mskTextboxChargeAffectee = new System.Windows.Forms.MaskedTextBox();
+            this.lblChargeProjet = new System.Windows.Forms.Label();
             this.lblResponsable = new System.Windows.Forms.Label();
             this.lblMontantContrat = new System.Windows.Forms.Label();
             this.comboBoxResponsable = new System.Windows.Forms.ComboBox();
@@ -279,6 +281,8 @@
             // 
             // grpboxForfait
             // 
+            this.grpboxForfait.Controls.Add(this.mskTextboxChargeAffectee);
+            this.grpboxForfait.Controls.Add(this.lblChargeProjet);
             this.grpboxForfait.Controls.Add(this.lblResponsable);
             this.grpboxForfait.Controls.Add(this.lblMontantContrat);
             this.grpboxForfait.Controls.Add(this.comboBoxResponsable);
@@ -286,11 +290,28 @@
             this.grpboxForfait.Controls.Add(this.grpboxPenalites);
             this.grpboxForfait.Location = new System.Drawing.Point(13, 250);
             this.grpboxForfait.Name = "grpboxForfait";
-            this.grpboxForfait.Size = new System.Drawing.Size(514, 179);
+            this.grpboxForfait.Size = new System.Drawing.Size(514, 205);
             this.grpboxForfait.TabIndex = 2;
             this.grpboxForfait.TabStop = false;
             this.grpboxForfait.Text = "Forfait";
             this.grpboxForfait.Visible = false;
+            // 
+            // mskTextboxChargeAffectee
+            // 
+            this.mskTextboxChargeAffectee.Enabled = false;
+            this.mskTextboxChargeAffectee.Location = new System.Drawing.Point(200, 173);
+            this.mskTextboxChargeAffectee.Name = "mskTextboxChargeAffectee";
+            this.mskTextboxChargeAffectee.Size = new System.Drawing.Size(100, 20);
+            this.mskTextboxChargeAffectee.TabIndex = 6;
+            // 
+            // lblChargeProjet
+            // 
+            this.lblChargeProjet.AutoSize = true;
+            this.lblChargeProjet.Location = new System.Drawing.Point(111, 173);
+            this.lblChargeProjet.Name = "lblChargeProjet";
+            this.lblChargeProjet.Size = new System.Drawing.Size(83, 13);
+            this.lblChargeProjet.TabIndex = 5;
+            this.lblChargeProjet.Text = "Charge affectée";
             // 
             // lblResponsable
             // 
@@ -401,11 +422,11 @@
             // 
             // btnCreer
             // 
-            this.btnCreer.Location = new System.Drawing.Point(205, 13);
+            this.btnCreer.Location = new System.Drawing.Point(304, 13);
             this.btnCreer.Name = "btnCreer";
-            this.btnCreer.Size = new System.Drawing.Size(75, 23);
+            this.btnCreer.Size = new System.Drawing.Size(108, 23);
             this.btnCreer.TabIndex = 2;
-            this.btnCreer.Text = "Créer";
+            this.btnCreer.Text = "Créer projet forfait";
             this.btnCreer.UseVisualStyleBackColor = true;
             this.btnCreer.Click += new System.EventHandler(this.btnCreer_Click);
             // 
@@ -413,13 +434,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(539, 439);
+            this.ClientSize = new System.Drawing.Size(545, 467);
             this.Controls.Add(this.btnCreer);
             this.Controls.Add(this.comboBoxProjets);
             this.Controls.Add(this.lblProjets);
             this.Controls.Add(this.grpboxForfait);
             this.Controls.Add(this.grpboxProjet);
             this.Controls.Add(this.btnQuitter);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmCreationProjet";
             this.Text = "Création d\'un projet au forfait";
             this.Load += new System.EventHandler(this.FrmCreationProjet_Load);
@@ -473,6 +495,8 @@
         private System.Windows.Forms.Button btnSupprimer;
         private System.Windows.Forms.Button btnModifier;
         private System.Windows.Forms.Button btnCreer;
+        private System.Windows.Forms.MaskedTextBox mskTextboxChargeAffectee;
+        private System.Windows.Forms.Label lblChargeProjet;
     }
 }
 

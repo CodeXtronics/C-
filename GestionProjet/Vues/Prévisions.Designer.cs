@@ -32,7 +32,6 @@
             this.comboBoxProjets = new System.Windows.Forms.ComboBox();
             this.projetForfaitBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.qualificationBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.previsionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.grpboxPrevision = new System.Windows.Forms.GroupBox();
             this.numericUpDownNbJours = new System.Windows.Forms.NumericUpDown();
             this.btnAnnuler = new System.Windows.Forms.Button();
@@ -42,17 +41,19 @@
             this.lblProjets = new System.Windows.Forms.Label();
             this.lblPrevisions = new System.Windows.Forms.Label();
             this.dataGridViewLesPrevisions = new System.Windows.Forms.DataGridView();
+            this.previsionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.laQualifDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.nbJoursDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Modifier = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Supprimer = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnConnection = new System.Windows.Forms.Button();
+            this.codeProjetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.codePrevisionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.projetForfaitBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.previsionBindingSource)).BeginInit();
             this.grpboxPrevision.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNbJours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLesPrevisions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previsionBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBoxProjets
@@ -74,10 +75,6 @@
             // qualificationBindingSource
             // 
             this.qualificationBindingSource.DataSource = typeof(GestionProjet.Metier.Qualification);
-            // 
-            // previsionBindingSource
-            // 
-            this.previsionBindingSource.DataSource = typeof(GestionProjet.Metier.Prevision);
             // 
             // grpboxPrevision
             // 
@@ -175,7 +172,9 @@
             this.laQualifDataGridViewTextBoxColumn,
             this.nbJoursDataGridViewTextBoxColumn,
             this.Modifier,
-            this.Supprimer});
+            this.Supprimer,
+            this.codeProjetDataGridViewTextBoxColumn,
+            this.codePrevisionDataGridViewTextBoxColumn});
             this.dataGridViewLesPrevisions.DataSource = this.previsionBindingSource;
             this.dataGridViewLesPrevisions.Location = new System.Drawing.Point(59, 88);
             this.dataGridViewLesPrevisions.Name = "dataGridViewLesPrevisions";
@@ -183,6 +182,10 @@
             this.dataGridViewLesPrevisions.Size = new System.Drawing.Size(462, 150);
             this.dataGridViewLesPrevisions.TabIndex = 6;
             this.dataGridViewLesPrevisions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewLesPrevisions_CellClick);
+            // 
+            // previsionBindingSource
+            // 
+            this.previsionBindingSource.DataSource = typeof(GestionProjet.Metier.Prevision);
             // 
             // laQualifDataGridViewTextBoxColumn
             // 
@@ -219,37 +222,43 @@
             this.Supprimer.Text = "Supprimer";
             this.Supprimer.UseColumnTextForButtonValue = true;
             // 
-            // btnConnection
+            // codeProjetDataGridViewTextBoxColumn
             // 
-            this.btnConnection.Location = new System.Drawing.Point(432, 10);
-            this.btnConnection.Name = "btnConnection";
-            this.btnConnection.Size = new System.Drawing.Size(75, 23);
-            this.btnConnection.TabIndex = 7;
-            this.btnConnection.Text = "Connection";
-            this.btnConnection.UseVisualStyleBackColor = true;
-            this.btnConnection.Click += new System.EventHandler(this.btnConnection_Click);
+            this.codeProjetDataGridViewTextBoxColumn.DataPropertyName = "CodeProjet";
+            this.codeProjetDataGridViewTextBoxColumn.HeaderText = "CodeProjet";
+            this.codeProjetDataGridViewTextBoxColumn.Name = "codeProjetDataGridViewTextBoxColumn";
+            this.codeProjetDataGridViewTextBoxColumn.ReadOnly = true;
+            this.codeProjetDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // codePrevisionDataGridViewTextBoxColumn
+            // 
+            this.codePrevisionDataGridViewTextBoxColumn.DataPropertyName = "CodePrevision";
+            this.codePrevisionDataGridViewTextBoxColumn.HeaderText = "CodePrevision";
+            this.codePrevisionDataGridViewTextBoxColumn.Name = "codePrevisionDataGridViewTextBoxColumn";
+            this.codePrevisionDataGridViewTextBoxColumn.ReadOnly = true;
+            this.codePrevisionDataGridViewTextBoxColumn.Visible = false;
             // 
             // Prévisions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(548, 422);
-            this.Controls.Add(this.btnConnection);
             this.Controls.Add(this.dataGridViewLesPrevisions);
             this.Controls.Add(this.lblPrevisions);
             this.Controls.Add(this.lblProjets);
             this.Controls.Add(this.btnCreer);
             this.Controls.Add(this.grpboxPrevision);
             this.Controls.Add(this.comboBoxProjets);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Prévisions";
             this.Text = "Prévisions";
             this.Load += new System.EventHandler(this.Prévisions_Load);
             ((System.ComponentModel.ISupportInitialize)(this.projetForfaitBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.qualificationBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.previsionBindingSource)).EndInit();
             this.grpboxPrevision.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNbJours)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLesPrevisions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previsionBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,14 +275,15 @@
         private System.Windows.Forms.Label lblProjets;
         private System.Windows.Forms.Label lblPrevisions;
         private System.Windows.Forms.NumericUpDown numericUpDownNbJours;
-        private System.Windows.Forms.BindingSource previsionBindingSource;
         private System.Windows.Forms.BindingSource qualificationBindingSource;
         private System.Windows.Forms.BindingSource projetForfaitBindingSource;
         private System.Windows.Forms.DataGridView dataGridViewLesPrevisions;
+        private System.Windows.Forms.BindingSource previsionBindingSource;
         private System.Windows.Forms.DataGridViewComboBoxColumn laQualifDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nbJoursDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewButtonColumn Modifier;
         private System.Windows.Forms.DataGridViewButtonColumn Supprimer;
-        private System.Windows.Forms.Button btnConnection;
+        private System.Windows.Forms.DataGridViewTextBoxColumn codeProjetDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn codePrevisionDataGridViewTextBoxColumn;
     }
 }

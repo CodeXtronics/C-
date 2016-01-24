@@ -23,8 +23,50 @@ namespace GestionProjet.Dao
 
         public static List<Qualification> GetAllQualifications()
         {
-            return Qualifications;
-            
+            using (SqlConnection sqlConnect = ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+
+                        //sqlCde.CommandText = strSql;
+                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCde.CommandText = "GetAllQualifications";
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+                        Qualifications = new List<Qualification>();
+                        while (sqlRdr.Read())
+                        {
+                            Qualification qualif = new Qualification()
+                            {
+                                CodeQualif = (sbyte)sqlRdr.GetByte(0),
+                                Libelle = sqlRdr.GetString(1),
+                                PvJournee=sqlRdr.GetDecimal(2)
+                            };
+                            Qualifications.Add(qualif);
+                        }
+                        sqlRdr.Close();
+
+                        return Qualifications;
+
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }
         }
         public static bool UpdProjet(int i,ProjetForfait pr)
         {
@@ -44,7 +86,7 @@ namespace GestionProjet.Dao
             using (SqlConnection sqlConnect = ConnectSQLServ())
             {
                 using (SqlCommand sqlCde = new SqlCommand())
-                {
+                {//TODO verifier le conflict
                     try
                     {
                         // Ouvre la connection. 
@@ -61,6 +103,64 @@ namespace GestionProjet.Dao
                         sqlCde.Parameters.Add(new SqlParameter("@IdProjet", System.Data.SqlDbType.Int)).Value = pr.CodeProjet;
                         // Exécution de la commande  
                         sqlRdr = sqlCde.ExecuteReader();
+                        sqlRdr.Close();
+
+                        return true;
+
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }
+
+        }        
+      
+        public static bool AddProjet(ProjetForfait pr)
+        {
+
+            using (SqlConnection sqlConnect = ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {//TODO verifier le conflict
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+
+                        //sqlCde.CommandText = strSql;
+                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCde.CommandText = "AddProjet";
+                        //affectation du parametre à la procédure stockée
+                        sqlCde.Parameters.Add(new SqlParameter("@idColl", System.Data.SqlDbType.Int)).Value = pr.ChefDeProjet.CodeColl;
+                        sqlCde.Parameters.Add(new SqlParameter("@IdClient", System.Data.SqlDbType.Int)).Value = pr.LeClient.CodeClient;
+                        sqlCde.Parameters.Add(new SqlParameter("@IdQualif", System.Data.SqlDbType.TinyInt)).Value = pr.ChefDeProjet.LaQualif.CodeQualif;
+                        sqlCde.Parameters.Add(new SqlParameter("@idtypep", System.Data.SqlDbType.TinyInt)).Value = 1;//TODO voir quoi faire pour le type
+                        sqlCde.Parameters.Add(new SqlParameter("@nomprojet", System.Data.SqlDbType.VarChar, 30)).Value = pr.NomProjet;
+                        sqlCde.Parameters.Add(new SqlParameter("@ddebut", System.Data.SqlDbType.Date)).Value = pr.DDebut;
+                        sqlCde.Parameters.Add(new SqlParameter("@dfin", System.Data.SqlDbType.Date)).Value = pr.DFin;
+                        sqlCde.Parameters.Add(new SqlParameter("@contactclient", System.Data.SqlDbType.VarChar, 30)).Value = pr.Contact;
+                        sqlCde.Parameters.Add(new SqlParameter("@mailcontact", System.Data.SqlDbType.VarChar, 30)).Value = pr.MailContact;
+                        sqlCde.Parameters.Add(new SqlParameter("@tarifjournalier", System.Data.SqlDbType.Money)).Value = pr.ChefDeProjet.PrJournalier;
+                        sqlCde.Parameters.Add(new SqlParameter("@mtContrat", System.Data.SqlDbType.Money)).Value = pr.MontantContrat;
+                        sqlCde.Parameters.Add(new SqlParameter("@penaliteOuiNon", System.Data.SqlDbType.Bit)).Value = pr.PenaliteOuiNon;
+
+                        //affectation du parametre OUT à la procédure stockée
+                        SqlParameter pOut = new SqlParameter("@idProjet", System.Data.SqlDbType.Int);
+                        pOut.Direction = System.Data.ParameterDirection.Output;
+                        sqlCde.Parameters.Add(pOut);
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+                        sqlRdr.Close();
 
 
                         return true;
@@ -71,40 +171,12 @@ namespace GestionProjet.Dao
                     }
                     catch (Exception ex)
                     {
-                        return null;
+                        return false;
                     }
                     finally { sqlConnect.Close(); }
                 }
             }
-            //if (Projets.Find(p => p.Equals(pr, true)) != null)
-            //{
-            //    Projets.Remove(pr);
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
         }
-        
-      
-        public static bool AddProjet(ProjetForfait pr)
-        {
-
-            if (Projets.Find(p => p.Equals(pr,true)) == null)
-            {
-                Projets.Add(pr);
-                
-                
-                return true;
-            }
-            else
-            {
-                return false;
-            }             
-        }
-
-
         public static SqlConnection ConnectSQLServ()
         {                       
             SqlConnection sqlConnect;
@@ -173,6 +245,8 @@ namespace GestionProjet.Dao
                                     CodeColl = sqlRdr.GetInt32(9)
 
                                 }
+                                
+                                
                                     
                             };
                             Projets.Add(proj);
@@ -286,7 +360,7 @@ namespace GestionProjet.Dao
                                 CP = sqlRdr.GetString(4),
                                 Ville = sqlRdr.GetString(5),
                                 Telephone = sqlRdr.GetString(6),
-                                Mail = sqlRdr[7].ToString()
+                                Mail = sqlRdr[7].ToString()                                
                             };
                             Clients.Add(clt);
                         }
@@ -305,7 +379,7 @@ namespace GestionProjet.Dao
             }
 
         }
-        public static void Init()
+        /*public static void Init()
         {
 
             
@@ -344,7 +418,7 @@ namespace GestionProjet.Dao
                 //new ProjetRegie(1001, "Gescom", new DateTime(2014,12,1),new DateTime(2015,03,31),Clients[0], "Catherine Tagada","ctagada@haribo.fr",450,Qualifications[1]),
                 //new ProjetRegie(1002, "Gescom", new DateTime(2015,01,5),new DateTime(2015,01,31),Clients[0], "Catherine Tagada","ctagada@haribo.fr",400,Qualifications[2])
             };
-        }
+        }*/
             
 
      

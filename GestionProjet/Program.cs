@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using GestionProjet.Vues;
 
 namespace GestionProjet
 {
@@ -20,7 +21,7 @@ namespace GestionProjet
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Dao.DaoProjet.Init();
-            Application.Run(new FrmCreationProjet());
+            Application.Run(new FrmAccueil());
             //Application.Run(new Prévisions());
         }
     }

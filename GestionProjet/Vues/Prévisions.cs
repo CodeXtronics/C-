@@ -54,7 +54,7 @@ namespace GestionProjet
 
         private void comboBoxProjets_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBoxProjets.SelectedItem != null) previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+            if (comboBoxProjets.SelectedItem != null) previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions(((ProjetForfait)comboBoxProjets.SelectedItem).CodeProjet);
             btnCreer.Enabled = true;
             
 
@@ -72,7 +72,7 @@ namespace GestionProjet
             if (butModifierClick)
             {
                 
-                if (DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions().Find(p => p.LaQualif.Equals(comboBoxQualification.SelectedItem)) == null 
+                if (DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions(((ProjetForfait)comboBoxProjets.SelectedItem).CodeProjet).Find(p => p.LaQualif.Equals(comboBoxQualification.SelectedItem)) == null 
                     || (Qualification)comboBoxQualification.SelectedItem == ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif)
                 {
                     ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif = (Qualification)comboBoxQualification.SelectedItem;
@@ -84,7 +84,7 @@ namespace GestionProjet
                     btnCreer.Enabled = true;
 
                     //Mets  a jours les données du databinding prevision.
-                    previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+                    previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions(((ProjetForfait)comboBoxProjets.SelectedItem).CodeProjet);
                     previsionBindingSource.ResetBindings(true);
                 }
                 else
@@ -97,7 +97,7 @@ namespace GestionProjet
             }
             else if (butCreerClick)
             {
-                if (DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions().Find(p => p.LaQualif.Equals(comboBoxQualification.SelectedItem)) == null)
+                if (DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions(((ProjetForfait)comboBoxProjets.SelectedItem).CodeProjet).Find(p => p.LaQualif.Equals(comboBoxQualification.SelectedItem)) == null)
                 {
                     DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].AddPrevision(new Prevision((Qualification)comboBoxQualification.SelectedItem, (short)numericUpDownNbJours.Value));
                     butCreerClick = false;
@@ -107,7 +107,7 @@ namespace GestionProjet
                     btnCreer.Enabled = true;
 
                     //Mets  a jours les données du databinding prevision.
-                    previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions();
+                    previsionBindingSource.DataSource = DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions(((ProjetForfait)comboBoxProjets.SelectedItem).CodeProjet);
                     previsionBindingSource.ResetBindings(true);
                 }
                 else
@@ -126,6 +126,9 @@ namespace GestionProjet
             if (cell.Value.ToString()=="Supprimer")
             {                
                 dataGridViewLesPrevisions.Rows.RemoveAt(e.RowIndex);
+                DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].DelPrevision((int)dataGridViewLesPrevisions.Rows[e.RowIndex].Cells[5].Value);
+
+
             }
             else if (cell.Value.ToString() == "Modifier")//Permet de modifier la valeur des informations de la ligne.
             {   //Active les controles de modification et désactive les controles inutile.
@@ -141,11 +144,6 @@ namespace GestionProjet
 
         }
 
-        private void btnConnection_Click(object sender, EventArgs e)
-        {
-            
-            // création de la connection 
-           
-        }
+
     }
 }

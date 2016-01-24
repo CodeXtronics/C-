@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.SqlClient;
 
 namespace GestionProjet.Metier
 {
-    class ProjetForfait : Projet, IEquatable<object>
+    using Dao;
+    class ProjetForfait : Projet
     {
         
 
@@ -14,28 +16,145 @@ namespace GestionProjet.Metier
         public List<Prevision> prevision;
         public Penalite PenaliteOuiNon { get; set; }
 
-        public List<Prevision> GetPrevisions()
+        public List<Prevision> GetPrevisions(int idProj)
         {
-            return prevision;
+            using (SqlConnection sqlConnect = DaoProjet.ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  +++++++++
+                        string strSql = string.Format("Select * from Prevision where idProjet = '{0}'", idProj);
+                        // Positionnement des propriétés
+                        sqlCde.CommandText = strSql;
+                        //sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        //sqlCde.CommandText = "GetAllPrevisions";
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+                        // Lecture des données du DataReader 
+                        prevision = new List<Prevision>();
+                        while (sqlRdr.Read())
+                        {
+
+                            Prevision prev = new Prevision()
+                            {
+                                CodePrevision = sqlRdr.GetInt32(0),
+                                CodeProjet = sqlRdr.GetInt32(1),
+                                LaQualif=new Qualification()
+                                {
+                                     CodeQualif = (sbyte)sqlRdr.GetByte(2)
+                                },
+                                NbJours=sqlRdr.GetInt16(3)
+
+                            };
+                            prevision.Add(prev);
+
+
+                        }
+                        
+                        // Fin des données  
+                        sqlRdr.Close();
+                        return prevision;
+                    }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }
+            
         }
         public bool AddPrevision(Prevision pr)
         {
-            prevision.Add(pr);
-            return true;
+            using (SqlConnection sqlConnect = DaoProjet.ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {//TODO verifier le conflict
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+
+                        //sqlCde.CommandText = strSql;
+                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCde.CommandText = "AddPrevision";
+                        //affectation du parametre à la procédure stockée
+                        sqlCde.Parameters.Add(new SqlParameter("@idProjet", System.Data.SqlDbType.Int)).Value = pr.CodeProjet;
+                        sqlCde.Parameters.Add(new SqlParameter("@idQualif", System.Data.SqlDbType.TinyInt)).Value = pr.LaQualif;
+                        sqlCde.Parameters.Add(new SqlParameter("@nbJours", System.Data.SqlDbType.SmallInt)).Value = pr.NbJours;
+
+                        //affectation du parametre OUT à la procédure stockée
+                        SqlParameter pOut = new SqlParameter("@idPrevision", System.Data.SqlDbType.Int);
+                        pOut.Direction = System.Data.ParameterDirection.Output;
+                        sqlCde.Parameters.Add(pOut);
+
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+                        sqlRdr.Close();
+
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }
         }
         public bool UpgPrevision(Prevision pr)
         {
             return true;
         }
-        public bool DelPrevision(Prevision pr)
+        public bool DelPrevision(int pr)
         {
-            prevision.Remove(pr);
-            return true;
+            using (SqlConnection sqlConnect =DaoProjet.ConnectSQLServ())
+            {
+                using (SqlCommand sqlCde = new SqlCommand())
+                {//TODO verifier le conflict
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+
+                        //sqlCde.CommandText = strSql;
+                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCde.CommandText = "DelPrevision";
+                        //affectation du parametre à la procédure stockée
+                        sqlCde.Parameters.Add(new SqlParameter("@idprevision", System.Data.SqlDbType.Int)).Value = pr;
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+                        sqlRdr.Close();
+
+                        return true;
+
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }
         }
-
-
-
-
         public ProjetForfait() { }
         public ProjetForfait(int co, string n, DateTime dDebP, DateTime dFinP, Client client,string cont,string ml, decimal montContract, bool ouinon, Collaborateur colla)
         {            

@@ -15,6 +15,7 @@ namespace GestionProjet
     
     using Dao;
     using Metier;
+    
     using System.Globalization;
     
     public partial class FrmCreationProjet : Form 
@@ -27,6 +28,7 @@ namespace GestionProjet
         public FrmCreationProjet()
         {
             InitializeComponent();
+            
         }
 
         private void FrmCreationProjet_Load(object sender, EventArgs e)
@@ -65,28 +67,11 @@ namespace GestionProjet
             DateTime datedebut;
             DateTime datefin;
 
-            //if (msktxtboxDateDebut.MaskCompleted
-            //    && msktxtboxDateFin.MaskCompleted)
-            //{
-            //    datedebut = Convert.ToDateTime(msktxtboxDateDebut.Text);
-            //    datefin = Convert.ToDateTime(msktxtboxDateFin.Text);
-
-            //    if (datefin < datedebut)
-            //    {
-            //        errorProviderObligatoire.SetError(msktxtboxDateFin, "Date de fin de projet < date de debut de projet");
-
-            //    }
-
-            //}
             if (txtboxNomProjet.Text == string.Empty)
             {
                 MessageBox.Show("Nom de projet obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtboxNomProjet.Focus();
-            }
-            else if (txtboxMontantContrat.Text == string.Empty)
-            {
-                MessageBox.Show("Montant obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            }            
             else if (!msktxtboxDateDebut.MaskCompleted)
             {
                 MessageBox.Show("Date de début obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -97,7 +82,11 @@ namespace GestionProjet
                 MessageBox.Show("Date de fin obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 msktxtboxDateFin.Focus();
             }
-
+            else if (txtboxMontantContrat.Text == string.Empty)
+            {
+                MessageBox.Show("Montant obligatoire", "Information manquante", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtboxMontantContrat.Focus();
+            }
             else
             {
                 datedebut = Convert.ToDateTime(msktxtboxDateDebut.Text);
@@ -106,12 +95,9 @@ namespace GestionProjet
                 if (datefin < datedebut)
                 {
                     errorProviderObligatoire.SetError(msktxtboxDateFin, "Date de fin de projet < date de debut de projet");
-
                 }
                 else
                 {
-
-
                     Random rdom = new Random();
                     string nom = txtboxNomProjet.Text;
                     Client clt = (Client)comboBoxClient.SelectedItem;
@@ -128,6 +114,7 @@ namespace GestionProjet
                         }
                         else
                         {
+                            //Affiche le projet forfait créer
                             MessageBox.Show(proj.ToString());
                             //projetForfaitBindingSource.Add(proj);
                             BoxEnable(false);
@@ -276,6 +263,8 @@ namespace GestionProjet
                     radbutPenalOui.Checked = false;
                     radbutPenalNon.Checked = true;
                 }
+                TimeSpan chrgAff = ((ProjetForfait)comboBoxProjets.SelectedItem).DFin - ((ProjetForfait)comboBoxProjets.SelectedItem).DDebut;
+                mskTextboxChargeAffectee.Text = Convert.ToString(chrgAff.Days);
             }
             btnModifier.Enabled = true;
             
@@ -287,12 +276,26 @@ namespace GestionProjet
             DialogResult result;            
             // Affiche la MessageBox.
             string message= "Confirmez-vous la suppression du projet "+ txtboxNomProjet.Text ;
-             result = MessageBox.Show(message,"SUPPRESSION PROJET",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            result = MessageBox.Show(message,"SUPPRESSION PROJET",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
 
             //Si yes est appuier sur la message box cela supprime le projet
             if (result == System.Windows.Forms.DialogResult.Yes)
-            DaoProjet.DelProjet((ProjetForfait)comboBoxProjets.SelectedItem);
-            projetForfaitBindingSource.ResetBindings(true);//Mets a jour le databinding source            
+            {
+                if (DaoProjet.DelProjet((ProjetForfait)comboBoxProjets.SelectedItem))
+                {
+                    projetForfaitBindingSource.RemoveAt(comboBoxProjets.SelectedIndex);
+                    MessageBox.Show("Projet supprimer");
+                    //Mets a jour le databinding source
+                    projetForfaitBindingSource.ResetBindings(true);
+                }
+                else
+                {
+                    MessageBox.Show("Projet non supprimer");
+                }
+            }
+
+                
+                       
             Initialisation();
             comboBoxProjets.Enabled = true;
             BoxEnable(false);
@@ -371,7 +374,8 @@ namespace GestionProjet
             btnSupprimer.Enabled = false;
             BoxEnable(true);
             txtboxNomProjet.Focus();
-            butCreerClick = true;            
+            butCreerClick = true;
+            mskTextboxChargeAffectee.Clear();            
         }
 
         private void InitDataBindingsBox(bool enable)

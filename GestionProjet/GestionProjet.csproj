@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dao\DaoException.cs" />
     <Compile Include="Dao\DaoProjet.cs" />
     <Compile Include="Metier\Client.cs" />
     <Compile Include="Metier\Collaborateur.cs" />
@@ -55,6 +56,12 @@
     <Compile Include="Metier\ProjetForfait.cs" />
     <Compile Include="Metier\ProjetRegie.cs" />
     <Compile Include="Metier\Qualification.cs" />
+    <Compile Include="Vues\FrmAccueil.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vues\FrmAccueil.Designer.cs">
+      <DependentUpon>FrmAccueil.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vues\Prévisions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +85,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Vues\FrmAccueil.resx">
+      <DependentUpon>FrmAccueil.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Vues\FrmCreaProjetForf.resx">
       <DependentUpon>FrmCreaProjetForf.cs</DependentUpon>
     </EmbeddedResource>
