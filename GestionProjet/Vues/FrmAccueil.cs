@@ -19,17 +19,15 @@ namespace GestionProjet.Vues
             InitializeComponent();
         }
 
-        private void FrmAccueil_Load(object sender, EventArgs e)
+        
+
+        private void timer1_Tick(object sender, EventArgs e)
         {
-                        
+            //statusStripDate.Text = DateTime.Now.ToShortTimeString();
+            tStripDatenow.Text = DateTime.Now.ToString();
         }
 
-        private void sidentifierToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void quitterToolStripMenuItem_Click(object sender, EventArgs e)
+        private void quitterToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             DialogResult result;
 
@@ -40,60 +38,53 @@ namespace GestionProjet.Vues
             if (result == System.Windows.Forms.DialogResult.Yes) this.Close();
         }
 
-        private void gérerProjetsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void gestionProjetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (gestionProjet != null && gestionProjet.Visible)
+            {
+                gérerProjetsToolStripMenuItem1.Enabled = false;
+            }
+            else
+            {
+                gérerProjetsToolStripMenuItem1.Enabled = true;
+            }
+            if (gestionprev != null && gestionprev.Visible)
+            {
+                prévisionToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                prévisionToolStripMenuItem.Enabled = true;
+            }
+        }
+
+        private void gérerProjetsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             gestionProjet = new FrmCreationProjet();
             gestionProjet.MdiParent = this;
-            gestionProjet.Show();            
+            gestionProjet.Show();
         }
 
-        private void prévisionnelToolStripMenuItem_Click(object sender, EventArgs e)
+        private void prévisionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             gestionprev = new Prévisions();
             gestionprev.MdiParent = this;
             gestionprev.Show();
         }
 
-        private void cascadeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void cascadesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.LayoutMdi(System.Windows.Forms.MdiLayout.Cascade);
         }
 
-        private void horizontaleToolStripMenuItem_Click(object sender, EventArgs e)
+        private void horizontaleToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            this.LayoutMdi(System.Windows.Forms.MdiLayout.TileHorizontal);           
+            this.LayoutMdi(System.Windows.Forms.MdiLayout.TileHorizontal);
         }
 
-        private void verticaleToolStripMenuItem_Click(object sender, EventArgs e)
+        private void verticaleToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.LayoutMdi(System.Windows.Forms.MdiLayout.TileVertical);
-        }
-
-        private void toolStripDropDownGestionProjet_Click(object sender, EventArgs e)
-        {
-            if (gestionProjet != null && gestionProjet.Visible)
-            {
-                gérerProjetsToolStripMenuItem.Enabled = false;
-            }
-            else
-            {
-                gérerProjetsToolStripMenuItem.Enabled = true;
-            }
-            if (gestionprev != null&&gestionprev.Visible)
-            {
-                prévisionnelToolStripMenuItem.Enabled = false;
-            }
-            else
-            {
-                prévisionnelToolStripMenuItem.Enabled = true;
-            }
-            
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            //statusStripDate.Text = DateTime.Now.ToShortTimeString();
-            tStripDatenow.Text = DateTime.Now.ToString();
         }
     }
 }

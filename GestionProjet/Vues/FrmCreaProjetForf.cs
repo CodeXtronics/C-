@@ -106,9 +106,9 @@ namespace GestionProjet
                     ProjetForfait proj = new ProjetForfait(0, nom, datedebut, datefin, clt, msktxtboxContact.Text, txtboxMailContact.Text, montant, radbutPenalOui.Checked, colla);
 
                     if (butCreerClick)
-                    {
-                        proj.CodeProjet = rdom.Next(9999);
-                        if (!DaoProjet.AddProjet(proj))
+                    { int codProj;
+                        
+                        if (!DaoProjet.AddProjet(proj,out codProj))
                         {
                             MessageBox.Show("Nom de projet déjâ présent");
                         }
@@ -116,12 +116,14 @@ namespace GestionProjet
                         {
                             //Affiche le projet forfait créer
                             MessageBox.Show(proj.ToString());
-                            //projetForfaitBindingSource.Add(proj);
+                            projetForfaitBindingSource.Add(proj);
                             BoxEnable(false);
                             comboBoxProjets.Enabled = true;
                             //projetForfaitBindingSource.ResetBindings(true);
                             InitDataBindingsBox(false);
                         }
+                        proj.CodeProjet = codProj;
+                        projetForfaitBindingSource.Add(proj);
                         butCreerClick = false;
                         btnSupprimer.Enabled = true;
                     }
@@ -129,10 +131,20 @@ namespace GestionProjet
                     {
                         proj.CodeProjet = projModif.CodeProjet;
 
-                        DaoProjet.UpdProjet(indexModif, proj);
+                        if (DaoProjet.UpdProjet(indexModif, proj))
+                        {
+                            projetForfaitBindingSource.RemoveAt(indexModif);
+                            projetForfaitBindingSource.Add(proj);
+                            //projetForfaitBindingSource.ResetCurrentItem();
+                            MessageBox.Show("Projet modifier");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Projet non modifier");
+                        }
                         BoxEnable(false);
                         butModifierClick = false;
-                        comboBoxProjets.Enabled = true;
+                        comboBoxProjets.Enabled = true;                        
                         projetForfaitBindingSource.ResetBindings(true);
                         InitDataBindingsBox(false);
                         btnModifier.Enabled = true;
@@ -333,6 +345,18 @@ namespace GestionProjet
             txtboxMailContact.Text = projModif.MailContact;
             comboBoxResponsable.SelectedItem = projModif.ChefDeProjet;
             txtboxMontantContrat.Text = Convert.ToString(projModif.MontantContrat);
+            if (projModif.PenaliteOuiNon==Penalite.Oui)
+            {
+                radbutPenalOui.Checked = true;
+                radbutPenalNon.Checked = false;
+            }
+            else
+            {
+                radbutPenalOui.Checked = false;
+                radbutPenalNon.Checked = true;
+            }
+            
+            
 
 
 

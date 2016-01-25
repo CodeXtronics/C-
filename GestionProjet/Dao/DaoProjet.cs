@@ -62,7 +62,7 @@ namespace GestionProjet.Dao
                     }
                     catch (Exception ex)
                     {
-                        return null;
+                        throw new DaoException("Récupération des qualifications impossible  : " + ex.Message, ex);
                     }
                     finally { sqlConnect.Close(); }
                 }
@@ -70,16 +70,51 @@ namespace GestionProjet.Dao
         }
         public static bool UpdProjet(int i,ProjetForfait pr)
         {
-            if (Projets.Find(p => p.Equals(pr,false))!=null)
+            using (SqlConnection sqlConnect = ConnectSQLServ())
             {
-                Projets.RemoveAt(i);            
-                Projets.Insert(i,pr);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+                using (SqlCommand sqlCde = new SqlCommand())
+                {//TODO verifier le conflict
+                    try
+                    {
+                        // Ouvre la connection. 
+                        sqlConnect.Open();
+                        // Création de la commande  
+                        SqlDataReader sqlRdr;
+                        sqlCde.Connection = sqlConnect;
+                        // Constitution Requête SQL  
+
+                        //sqlCde.CommandText = strSql;
+                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlCde.CommandText = "UpdProjet";
+                        //affectation du parametre à la procédure stockée
+                        sqlCde.Parameters.Add(new SqlParameter("@idProjet", System.Data.SqlDbType.Int)).Value = pr.CodeProjet;
+                        sqlCde.Parameters.Add(new SqlParameter("@idColl", System.Data.SqlDbType.Int)).Value = pr.ChefDeProjet.CodeColl;
+                        sqlCde.Parameters.Add(new SqlParameter("@IdClient", System.Data.SqlDbType.Int)).Value = pr.LeClient.CodeClient;
+                        sqlCde.Parameters.Add(new SqlParameter("@IdQualif", System.Data.SqlDbType.TinyInt)).Value = null;
+                        sqlCde.Parameters.Add(new SqlParameter("@idtypep", System.Data.SqlDbType.TinyInt)).Value = 1;//TODO voir quoi faire pour le type
+                        sqlCde.Parameters.Add(new SqlParameter("@nomprojet", System.Data.SqlDbType.VarChar, 30)).Value = pr.NomProjet;
+                        sqlCde.Parameters.Add(new SqlParameter("@ddebut", System.Data.SqlDbType.Date)).Value = pr.DDebut;
+                        sqlCde.Parameters.Add(new SqlParameter("@dfin", System.Data.SqlDbType.Date)).Value = pr.DFin;
+                        sqlCde.Parameters.Add(new SqlParameter("@contactclient", System.Data.SqlDbType.VarChar, 30)).Value = pr.Contact;
+                        sqlCde.Parameters.Add(new SqlParameter("@mailcontact", System.Data.SqlDbType.VarChar, 30)).Value = pr.MailContact;
+                        sqlCde.Parameters.Add(new SqlParameter("@tarifjournalier", System.Data.SqlDbType.Money)).Value = null;
+                        sqlCde.Parameters.Add(new SqlParameter("@mtContrat", System.Data.SqlDbType.Money)).Value = pr.MontantContrat;
+                        sqlCde.Parameters.Add(new SqlParameter("@penaliteOuiNon", System.Data.SqlDbType.Bit)).Value = pr.PenaliteOuiNon;
+                        
+                        // Exécution de la commande  
+                        sqlRdr = sqlCde.ExecuteReader();
+
+                        
+
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new DaoException("Modification projet impossible  : " + ex.Message, ex);
+                    }
+                    finally { sqlConnect.Close(); }
+                }
+            }            
         }
         public static bool DelProjet(ProjetForfait pr)
         {
@@ -113,7 +148,7 @@ namespace GestionProjet.Dao
                     }
                     catch (Exception ex)
                     {
-                        return false;
+                        throw new DaoException("Suppression du projets impossible  : " + ex.Message, ex);
                     }
                     finally { sqlConnect.Close(); }
                 }
@@ -121,7 +156,7 @@ namespace GestionProjet.Dao
 
         }        
       
-        public static bool AddProjet(ProjetForfait pr)
+        public static bool AddProjet(ProjetForfait pr,out int idproj)
         {
 
             using (SqlConnection sqlConnect = ConnectSQLServ())
@@ -143,14 +178,14 @@ namespace GestionProjet.Dao
                         //affectation du parametre à la procédure stockée
                         sqlCde.Parameters.Add(new SqlParameter("@idColl", System.Data.SqlDbType.Int)).Value = pr.ChefDeProjet.CodeColl;
                         sqlCde.Parameters.Add(new SqlParameter("@IdClient", System.Data.SqlDbType.Int)).Value = pr.LeClient.CodeClient;
-                        sqlCde.Parameters.Add(new SqlParameter("@IdQualif", System.Data.SqlDbType.TinyInt)).Value = pr.ChefDeProjet.LaQualif.CodeQualif;
+                        sqlCde.Parameters.Add(new SqlParameter("@IdQualif", System.Data.SqlDbType.TinyInt)).Value = null;
                         sqlCde.Parameters.Add(new SqlParameter("@idtypep", System.Data.SqlDbType.TinyInt)).Value = 1;//TODO voir quoi faire pour le type
                         sqlCde.Parameters.Add(new SqlParameter("@nomprojet", System.Data.SqlDbType.VarChar, 30)).Value = pr.NomProjet;
                         sqlCde.Parameters.Add(new SqlParameter("@ddebut", System.Data.SqlDbType.Date)).Value = pr.DDebut;
                         sqlCde.Parameters.Add(new SqlParameter("@dfin", System.Data.SqlDbType.Date)).Value = pr.DFin;
                         sqlCde.Parameters.Add(new SqlParameter("@contactclient", System.Data.SqlDbType.VarChar, 30)).Value = pr.Contact;
                         sqlCde.Parameters.Add(new SqlParameter("@mailcontact", System.Data.SqlDbType.VarChar, 30)).Value = pr.MailContact;
-                        sqlCde.Parameters.Add(new SqlParameter("@tarifjournalier", System.Data.SqlDbType.Money)).Value = pr.ChefDeProjet.PrJournalier;
+                        sqlCde.Parameters.Add(new SqlParameter("@tarifjournalier", System.Data.SqlDbType.Money)).Value = null;
                         sqlCde.Parameters.Add(new SqlParameter("@mtContrat", System.Data.SqlDbType.Money)).Value = pr.MontantContrat;
                         sqlCde.Parameters.Add(new SqlParameter("@penaliteOuiNon", System.Data.SqlDbType.Bit)).Value = pr.PenaliteOuiNon;
 
@@ -158,20 +193,19 @@ namespace GestionProjet.Dao
                         SqlParameter pOut = new SqlParameter("@idProjet", System.Data.SqlDbType.Int);
                         pOut.Direction = System.Data.ParameterDirection.Output;
                         sqlCde.Parameters.Add(pOut);
+
+                        
+
                         // Exécution de la commande  
                         sqlRdr = sqlCde.ExecuteReader();
-                        sqlRdr.Close();
 
+                        idproj = (int)sqlCde.Parameters[12].Value;
 
                         return true;
-
-
-
-
                     }
                     catch (Exception ex)
                     {
-                        return false;
+                        throw new DaoException("Ajout projet impossible  : " + ex.Message, ex);
                     }
                     finally { sqlConnect.Close(); }
                 }
@@ -190,9 +224,9 @@ namespace GestionProjet.Dao
                 sqlConnect.Open();
                 return sqlConnect;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return null;
+                throw new DaoException("Connection impossible  : " + ex.Message, ex);
             }
             finally { sqlConnect.Close(); }
 
@@ -260,7 +294,7 @@ namespace GestionProjet.Dao
                     }
                     catch (Exception ex)
                     {
-                        return  null;
+                        throw new DaoException("Récupération des projets impossible  : " + ex.Message, ex);
                     }
                     finally { sqlConnect.Close(); }
                 }
@@ -320,7 +354,7 @@ namespace GestionProjet.Dao
                     }
                     catch (Exception ex)
                     {
-                        return null;
+                        throw new DaoException("Récupération des collaborateur impossible  :" + ex.Message, ex);
                     }
                     finally { sqlConnect.Close(); }
                 }
@@ -371,7 +405,7 @@ namespace GestionProjet.Dao
                     }
                     catch (Exception ex)
                     {
-                        return null;
+                        throw new DaoException("Récupération des clients impossible  :" + ex.Message, ex);
                     }
                     finally { sqlConnect.Close(); }
                 }

@@ -29,24 +29,23 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAccueil));
             this.statusStripDate = new System.Windows.Forms.StatusStrip();
             this.tStripDatenow = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripOption = new System.Windows.Forms.ToolStrip();
-            this.toolStripConnection = new System.Windows.Forms.ToolStripDropDownButton();
-            this.sidentifierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripDropDownGestionProjet = new System.Windows.Forms.ToolStripDropDownButton();
-            this.gérerProjetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.prévisionnelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripDropDownFenetre = new System.Windows.Forms.ToolStripDropDownButton();
-            this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.horizontaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.verticaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.menuStripOption = new System.Windows.Forms.MenuStrip();
+            this.connectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gestionProjetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sidentifierToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.fenêtresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cascadesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.horizontaleToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.verticaleToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.gérerProjetsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.prévisionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripDate.SuspendLayout();
-            this.toolStripOption.SuspendLayout();
+            this.menuStripOption.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStripDate
@@ -67,113 +66,106 @@
             // 
             // toolStripOption
             // 
-            this.toolStripOption.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripConnection,
-            this.toolStripDropDownGestionProjet,
-            this.toolStripDropDownFenetre});
-            this.toolStripOption.Location = new System.Drawing.Point(0, 0);
+            this.toolStripOption.Location = new System.Drawing.Point(0, 24);
             this.toolStripOption.Name = "toolStripOption";
             this.toolStripOption.Size = new System.Drawing.Size(661, 25);
             this.toolStripOption.TabIndex = 1;
             this.toolStripOption.Text = "toolStrip1";
             // 
-            // toolStripConnection
-            // 
-            this.toolStripConnection.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripConnection.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sidentifierToolStripMenuItem,
-            this.quitterToolStripMenuItem});
-            this.toolStripConnection.Image = ((System.Drawing.Image)(resources.GetObject("toolStripConnection.Image")));
-            this.toolStripConnection.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripConnection.Name = "toolStripConnection";
-            this.toolStripConnection.Size = new System.Drawing.Size(82, 22);
-            this.toolStripConnection.Text = "Connection";
-            // 
-            // sidentifierToolStripMenuItem
-            // 
-            this.sidentifierToolStripMenuItem.Name = "sidentifierToolStripMenuItem";
-            this.sidentifierToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.sidentifierToolStripMenuItem.Text = "S’identifier";
-            this.sidentifierToolStripMenuItem.Click += new System.EventHandler(this.sidentifierToolStripMenuItem_Click);
-            // 
-            // quitterToolStripMenuItem
-            // 
-            this.quitterToolStripMenuItem.Name = "quitterToolStripMenuItem";
-            this.quitterToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.quitterToolStripMenuItem.Text = "Quitter";
-            this.quitterToolStripMenuItem.Click += new System.EventHandler(this.quitterToolStripMenuItem_Click);
-            // 
-            // toolStripDropDownGestionProjet
-            // 
-            this.toolStripDropDownGestionProjet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownGestionProjet.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gérerProjetsToolStripMenuItem,
-            this.prévisionnelToolStripMenuItem});
-            this.toolStripDropDownGestionProjet.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownGestionProjet.Image")));
-            this.toolStripDropDownGestionProjet.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownGestionProjet.Name = "toolStripDropDownGestionProjet";
-            this.toolStripDropDownGestionProjet.Size = new System.Drawing.Size(94, 22);
-            this.toolStripDropDownGestionProjet.Text = "Gestion Projet";
-            this.toolStripDropDownGestionProjet.Click += new System.EventHandler(this.toolStripDropDownGestionProjet_Click);
-            // 
-            // gérerProjetsToolStripMenuItem
-            // 
-            this.gérerProjetsToolStripMenuItem.Name = "gérerProjetsToolStripMenuItem";
-            this.gérerProjetsToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.gérerProjetsToolStripMenuItem.Text = "Gérer projets";
-            this.gérerProjetsToolStripMenuItem.Click += new System.EventHandler(this.gérerProjetsToolStripMenuItem_Click);
-            // 
-            // prévisionnelToolStripMenuItem
-            // 
-            this.prévisionnelToolStripMenuItem.Name = "prévisionnelToolStripMenuItem";
-            this.prévisionnelToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.prévisionnelToolStripMenuItem.Text = "Prévisionnel";
-            this.prévisionnelToolStripMenuItem.Click += new System.EventHandler(this.prévisionnelToolStripMenuItem_Click);
-            // 
-            // toolStripDropDownFenetre
-            // 
-            this.toolStripDropDownFenetre.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownFenetre.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cascadeToolStripMenuItem,
-            this.horizontaleToolStripMenuItem,
-            this.verticaleToolStripMenuItem,
-            this.toolStripSeparator1});
-            this.toolStripDropDownFenetre.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownFenetre.Image")));
-            this.toolStripDropDownFenetre.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownFenetre.Name = "toolStripDropDownFenetre";
-            this.toolStripDropDownFenetre.Size = new System.Drawing.Size(64, 22);
-            this.toolStripDropDownFenetre.Text = "Fenêtres";
-            // 
-            // cascadeToolStripMenuItem
-            // 
-            this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
-            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.cascadeToolStripMenuItem.Text = "Cascade";
-            this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.cascadeToolStripMenuItem_Click);
-            // 
-            // horizontaleToolStripMenuItem
-            // 
-            this.horizontaleToolStripMenuItem.Name = "horizontaleToolStripMenuItem";
-            this.horizontaleToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.horizontaleToolStripMenuItem.Text = "Horizontale";
-            this.horizontaleToolStripMenuItem.Click += new System.EventHandler(this.horizontaleToolStripMenuItem_Click);
-            // 
-            // verticaleToolStripMenuItem
-            // 
-            this.verticaleToolStripMenuItem.Name = "verticaleToolStripMenuItem";
-            this.verticaleToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.verticaleToolStripMenuItem.Text = "Verticale";
-            this.verticaleToolStripMenuItem.Click += new System.EventHandler(this.verticaleToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(132, 6);
-            // 
             // timer1
             // 
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // menuStripOption
+            // 
+            this.menuStripOption.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectionToolStripMenuItem,
+            this.gestionProjetToolStripMenuItem,
+            this.fenêtresToolStripMenuItem});
+            this.menuStripOption.Location = new System.Drawing.Point(0, 0);
+            this.menuStripOption.MdiWindowListItem = this.fenêtresToolStripMenuItem;
+            this.menuStripOption.Name = "menuStripOption";
+            this.menuStripOption.Size = new System.Drawing.Size(661, 24);
+            this.menuStripOption.TabIndex = 3;
+            this.menuStripOption.Text = "Option";
+            // 
+            // connectionToolStripMenuItem
+            // 
+            this.connectionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sidentifierToolStripMenuItem1,
+            this.quitterToolStripMenuItem1});
+            this.connectionToolStripMenuItem.Name = "connectionToolStripMenuItem";
+            this.connectionToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
+            this.connectionToolStripMenuItem.Text = "Connection";
+            // 
+            // gestionProjetToolStripMenuItem
+            // 
+            this.gestionProjetToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.gérerProjetsToolStripMenuItem1,
+            this.prévisionToolStripMenuItem});
+            this.gestionProjetToolStripMenuItem.Name = "gestionProjetToolStripMenuItem";
+            this.gestionProjetToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
+            this.gestionProjetToolStripMenuItem.Text = "Gestion projet";
+            this.gestionProjetToolStripMenuItem.Click += new System.EventHandler(this.gestionProjetToolStripMenuItem_Click);
+            // 
+            // sidentifierToolStripMenuItem1
+            // 
+            this.sidentifierToolStripMenuItem1.Name = "sidentifierToolStripMenuItem1";
+            this.sidentifierToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.sidentifierToolStripMenuItem1.Text = "S\'identifier";
+            // 
+            // quitterToolStripMenuItem1
+            // 
+            this.quitterToolStripMenuItem1.Name = "quitterToolStripMenuItem1";
+            this.quitterToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.quitterToolStripMenuItem1.Text = "Quitter";
+            this.quitterToolStripMenuItem1.Click += new System.EventHandler(this.quitterToolStripMenuItem1_Click);
+            // 
+            // fenêtresToolStripMenuItem
+            // 
+            this.fenêtresToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cascadesToolStripMenuItem,
+            this.horizontaleToolStripMenuItem1,
+            this.verticaleToolStripMenuItem1});
+            this.fenêtresToolStripMenuItem.Name = "fenêtresToolStripMenuItem";
+            this.fenêtresToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.fenêtresToolStripMenuItem.Text = "Fenêtres";
+            // 
+            // cascadesToolStripMenuItem
+            // 
+            this.cascadesToolStripMenuItem.Name = "cascadesToolStripMenuItem";
+            this.cascadesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cascadesToolStripMenuItem.Text = "Cascade";
+            this.cascadesToolStripMenuItem.Click += new System.EventHandler(this.cascadesToolStripMenuItem_Click);
+            // 
+            // horizontaleToolStripMenuItem1
+            // 
+            this.horizontaleToolStripMenuItem1.Name = "horizontaleToolStripMenuItem1";
+            this.horizontaleToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.horizontaleToolStripMenuItem1.Text = "Horizontale";
+            this.horizontaleToolStripMenuItem1.Click += new System.EventHandler(this.horizontaleToolStripMenuItem1_Click);
+            // 
+            // verticaleToolStripMenuItem1
+            // 
+            this.verticaleToolStripMenuItem1.Name = "verticaleToolStripMenuItem1";
+            this.verticaleToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.verticaleToolStripMenuItem1.Text = "Verticale";
+            this.verticaleToolStripMenuItem1.Click += new System.EventHandler(this.verticaleToolStripMenuItem1_Click);
+            // 
+            // gérerProjetsToolStripMenuItem1
+            // 
+            this.gérerProjetsToolStripMenuItem1.Name = "gérerProjetsToolStripMenuItem1";
+            this.gérerProjetsToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.gérerProjetsToolStripMenuItem1.Text = "Gérer projets";
+            this.gérerProjetsToolStripMenuItem1.Click += new System.EventHandler(this.gérerProjetsToolStripMenuItem1_Click);
+            // 
+            // prévisionToolStripMenuItem
+            // 
+            this.prévisionToolStripMenuItem.Name = "prévisionToolStripMenuItem";
+            this.prévisionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.prévisionToolStripMenuItem.Text = "Prévisionnel";
+            this.prévisionToolStripMenuItem.Click += new System.EventHandler(this.prévisionToolStripMenuItem_Click);
             // 
             // FrmAccueil
             // 
@@ -182,15 +174,16 @@
             this.ClientSize = new System.Drawing.Size(661, 261);
             this.Controls.Add(this.toolStripOption);
             this.Controls.Add(this.statusStripDate);
+            this.Controls.Add(this.menuStripOption);
             this.IsMdiContainer = true;
+            this.MainMenuStrip = this.menuStripOption;
             this.Name = "FrmAccueil";
             this.Text = "FrmAccueil";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.FrmAccueil_Load);
             this.statusStripDate.ResumeLayout(false);
             this.statusStripDate.PerformLayout();
-            this.toolStripOption.ResumeLayout(false);
-            this.toolStripOption.PerformLayout();
+            this.menuStripOption.ResumeLayout(false);
+            this.menuStripOption.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,17 +194,17 @@
         private System.Windows.Forms.StatusStrip statusStripDate;
         private System.Windows.Forms.ToolStripStatusLabel tStripDatenow;
         private System.Windows.Forms.ToolStrip toolStripOption;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripConnection;
-        private System.Windows.Forms.ToolStripMenuItem sidentifierToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem quitterToolStripMenuItem;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownGestionProjet;
-        private System.Windows.Forms.ToolStripMenuItem gérerProjetsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem prévisionnelToolStripMenuItem;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownFenetre;
-        private System.Windows.Forms.ToolStripMenuItem cascadeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem horizontaleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem verticaleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.MenuStrip menuStripOption;
+        private System.Windows.Forms.ToolStripMenuItem connectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sidentifierToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem quitterToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem gestionProjetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fenêtresToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cascadesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem horizontaleToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem verticaleToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem gérerProjetsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem prévisionToolStripMenuItem;
     }
 }

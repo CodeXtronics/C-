@@ -22,6 +22,7 @@ namespace GestionProjet
         DataGridViewCell nbJours;
         DataGridViewCell cell;
         DataGridViewCell modif;
+        DataGridViewCell codePrev;
         bool butModifierClick;
         bool butCreerClick;
 
@@ -75,9 +76,13 @@ namespace GestionProjet
                 if (DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions(((ProjetForfait)comboBoxProjets.SelectedItem).CodeProjet).Find(p => p.LaQualif.Equals(comboBoxQualification.SelectedItem)) == null 
                     || (Qualification)comboBoxQualification.SelectedItem == ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif)
                 {
-                    ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif = (Qualification)comboBoxQualification.SelectedItem;
-                    nbJours.Value = numericUpDownNbJours.Value;
 
+                    Qualification qualif = ((Prevision)laQualifDataGridViewTextBoxColumn.DataGridView.CurrentRow.DataBoundItem).LaQualif;
+                    qualif = (Qualification)comboBoxQualification.SelectedItem;
+                    nbJours.Value = numericUpDownNbJours.Value;
+                    
+                    Prevision pr = new Prevision((int)codePrev.Value,((ProjetForfait)comboBoxProjets.SelectedItem).CodeProjet, qualif, (short)numericUpDownNbJours.Value);
+                    DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].UpgPrevision(pr);
                     butModifierClick = false;
                     grpboxPrevision.Visible = false;
                     comboBoxProjets.Enabled = true;
@@ -122,6 +127,7 @@ namespace GestionProjet
             cell = dataGridViewLesPrevisions.Rows[e.RowIndex].Cells[e.ColumnIndex];
             nbJours = dataGridViewLesPrevisions.Rows[e.RowIndex].Cells[1];
             modif = dataGridViewLesPrevisions.Rows[e.RowIndex].Cells[2];
+            codePrev = dataGridViewLesPrevisions.Rows[e.RowIndex].Cells[5];
 
             if (cell.Value.ToString()=="Supprimer")
             {                

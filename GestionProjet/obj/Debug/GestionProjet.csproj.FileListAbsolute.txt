@@ -76,3 +76,4 @@ E:\Projets Concepteur informatique\C-\GestionProjet\obj\Debug\GestionProjet.cspr
 E:\Projets Concepteur informatique\C-\GestionProjet\bin\Debug\GestionProjet.exe
 E:\Projets Concepteur informatique\C-\GestionProjet\bin\Debug\GestionProjet.pdb
 E:\Projets Concepteur informatique\C-\GestionProjet\obj\Debug\GestionProjet.Vues.FrmAccueil.resources
+D:\GitHub\C-\GestionProjet\obj\Debug\GestionProjet.Vues.FrmAccueil.resources
