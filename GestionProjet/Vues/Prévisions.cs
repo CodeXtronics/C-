@@ -36,7 +36,8 @@ namespace GestionProjet
         private void Prévisions_Load(object sender, EventArgs e)
         {
 
-            projetForfaitBindingSource.DataSource = DaoProjet.GetAllProjets();            
+            projetForfaitBindingSource.DataSource = DaoProjet.GetAllProjets();
+            //previsionBindingSource.DataSource = DaoProjet.GetAllPrevisions();            
             qualificationBindingSource.DataSource = DaoProjet.GetAllQualifications();
             comboBoxProjets.SelectedItem = null;
             btnCreer.Enabled = false;
@@ -105,8 +106,10 @@ namespace GestionProjet
                 if (DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].GetPrevisions(((ProjetForfait)comboBoxProjets.SelectedItem).CodeProjet).Find(p => p.LaQualif.Equals(comboBoxQualification.SelectedItem)) == null)
                 {
                     DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].AddPrevision(new Prevision((Qualification)comboBoxQualification.SelectedItem, (short)numericUpDownNbJours.Value));
-                    butCreerClick = false;
 
+                    Prevision prev = new Prevision((Qualification)comboBoxQualification.SelectedItem, (short)numericUpDownNbJours.Value);
+                    DaoProjet.AddPrevision(prev);
+                    butCreerClick = false;
                     grpboxPrevision.Visible = false;
                     comboBoxProjets.Enabled = true;
                     btnCreer.Enabled = true;
@@ -130,9 +133,17 @@ namespace GestionProjet
             codePrev = dataGridViewLesPrevisions.Rows[e.RowIndex].Cells[5];
 
             if (cell.Value.ToString()=="Supprimer")
-            {                
-                dataGridViewLesPrevisions.Rows.RemoveAt(e.RowIndex);
-                DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].DelPrevision((int)dataGridViewLesPrevisions.Rows[e.RowIndex].Cells[5].Value);
+            {
+                if (DaoProjet.DelPrevision((int)codePrev.Value))
+                {
+                    dataGridViewLesPrevisions.Rows.RemoveAt(e.RowIndex);
+                    DaoProjet.GetAllProjets()[comboBoxProjets.SelectedIndex].DelPrevision((int)dataGridViewLesPrevisions.Rows[e.RowIndex].Cells[5].Value);
+                    MessageBox.Show("Prévision supprimer");
+                }
+                else
+                {
+                    MessageBox.Show("Prévision non supprimer");
+                }
 
 
             }

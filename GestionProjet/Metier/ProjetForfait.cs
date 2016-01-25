@@ -18,57 +18,7 @@ namespace GestionProjet.Metier
 
         public List<Prevision> GetPrevisions(int idProj)
         {
-            using (SqlConnection sqlConnect = DaoProjet.ConnectSQLServ())
-            {
-                using (SqlCommand sqlCde = new SqlCommand())
-                {
-                    try
-                    {
-                        // Ouvre la connection. 
-                        sqlConnect.Open();
-                        // Création de la commande  
-                        SqlDataReader sqlRdr;
-                        sqlCde.Connection = sqlConnect;
-                        // Constitution Requête SQL  +++++++++
-                        string strSql = string.Format("Select * from Prevision where idProjet = '{0}'", idProj);
-                        // Positionnement des propriétés
-                        sqlCde.CommandText = strSql;
-                        //sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
-                        //sqlCde.CommandText = "GetAllPrevisions";
-                        // Exécution de la commande  
-                        sqlRdr = sqlCde.ExecuteReader();
-                        // Lecture des données du DataReader 
-                        prevision = new List<Prevision>();
-                        while (sqlRdr.Read())
-                        {
-
-                            Prevision prev = new Prevision()
-                            {
-                                CodePrevision = sqlRdr.GetInt32(0),
-                                CodeProjet = sqlRdr.GetInt32(1),
-                                LaQualif=new Qualification()
-                                {
-                                     CodeQualif = (sbyte)sqlRdr.GetByte(2)
-                                },
-                                NbJours=sqlRdr.GetInt16(3)
-
-                            };
-                            prevision.Add(prev);
-
-
-                        }
-                        
-                        // Fin des données  
-                        sqlRdr.Close();
-                        return prevision;
-                    }
-                    catch (Exception ex)
-                    {
-                        return null;
-                    }
-                    finally { sqlConnect.Close(); }
-                }
-            }
+            return prevision;
             
         }
         public bool AddPrevision(Prevision pr)
