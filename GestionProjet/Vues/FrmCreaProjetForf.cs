@@ -131,7 +131,7 @@ namespace GestionProjet
                     {
                         proj.CodeProjet = projModif.CodeProjet;
 
-                        if (DaoProjet.UpdProjet(indexModif, proj))
+                        if (DaoProjet.UpdProjet(proj))
                         {
                             projetForfaitBindingSource.RemoveAt(indexModif);
                             projetForfaitBindingSource.Add(proj);
@@ -414,10 +414,11 @@ namespace GestionProjet
             }
         }
 
-
-
-
-
-
+        private void btnPrevision_Click(object sender, EventArgs e)
+        {
+            Prévisions gestionprev = new Prévisions();
+            
+            gestionprev.ShowDialog();
+        }
     }
 }

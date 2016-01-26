@@ -69,7 +69,7 @@ namespace GestionProjet.Dao
                 }
             }
         }
-        public static bool UpdProjet(int i,ProjetForfait pr)
+        public static bool UpdProjet(ProjetForfait pr)
         {
             using (SqlConnection sqlConnect = ConnectSQLServ())
             {
@@ -271,7 +271,7 @@ namespace GestionProjet.Dao
                                 MailContact = sqlRdr[5].ToString(),
                                 LeClient = new Client()
                                 {
-                                    CodeClient=sqlRdr.GetInt32(6)
+                                    CodeClient = sqlRdr.GetInt32(6)
                                 },
                                 MontantContrat = sqlRdr.GetDecimal(7),
                                 PenaliteOuiNon = pen,
@@ -279,7 +279,9 @@ namespace GestionProjet.Dao
                                 {
                                     CodeColl = sqlRdr.GetInt32(9)
 
-                                }
+                                },
+                                prevision = new List<Prevision>()
+                                
                                 
                                 
                                     
@@ -414,7 +416,7 @@ namespace GestionProjet.Dao
             }
 
         }
-        public static List<Prevision> GetAllPrevisions()
+        public static List<Prevision> GetAllPrevisions(int idProj)
         {
 
             using (SqlConnection sqlConnect = DaoProjet.ConnectSQLServ())
@@ -429,11 +431,11 @@ namespace GestionProjet.Dao
                         SqlDataReader sqlRdr;
                         sqlCde.Connection = sqlConnect;
                         // Constitution Requête SQL  +++++++++
-                        //string strSql = string.Format("Select * from Prevision where idProjet = '{0}'", idProj);
+                        string strSql = string.Format("Select * from Prevision where idProjet = '{0}'", idProj);
                         //// Positionnement des propriétés
-                        //sqlCde.CommandText = strSql;
-                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
-                        sqlCde.CommandText = "GetAllPrevisions";
+                        sqlCde.CommandText = strSql;
+                        //sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
+                        //sqlCde.CommandText = "GetAllPrevisions";
                         // Exécution de la commande  
                         sqlRdr = sqlCde.ExecuteReader();
                         // Lecture des données du DataReader 
@@ -536,7 +538,7 @@ namespace GestionProjet.Dao
                         //affectation du parametre à la procédure stockée
                         sqlCde.Parameters.Add(new SqlParameter("@idPrevision", System.Data.SqlDbType.Int)).Value = pr.CodePrevision;
                         sqlCde.Parameters.Add(new SqlParameter("@idProjet", System.Data.SqlDbType.Int)).Value = pr.CodeProjet;
-                        sqlCde.Parameters.Add(new SqlParameter("@idQualif", System.Data.SqlDbType.TinyInt)).Value = pr.LaQualif;
+                        sqlCde.Parameters.Add(new SqlParameter("@idQualif", System.Data.SqlDbType.TinyInt)).Value = pr.LaQualif.CodeQualif;
                         sqlCde.Parameters.Add(new SqlParameter("@nbJours", System.Data.SqlDbType.SmallInt)).Value = pr.NbJours;
 
                         // Exécution de la commande  
@@ -553,7 +555,7 @@ namespace GestionProjet.Dao
                 }
             }
         }
-        public static bool DelPrevision(int pr)
+        public static bool DelPrevision(Prevision pr)
         {
             using (SqlConnection sqlConnect = DaoProjet.ConnectSQLServ())
             {
@@ -572,7 +574,7 @@ namespace GestionProjet.Dao
                         sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
                         sqlCde.CommandText = "DelPrevision";
                         //affectation du parametre à la procédure stockée
-                        sqlCde.Parameters.Add(new SqlParameter("@idprevision", System.Data.SqlDbType.Int)).Value = pr;
+                        sqlCde.Parameters.Add(new SqlParameter("@idprevision", System.Data.SqlDbType.Int)).Value = pr.CodePrevision;
                         // Exécution de la commande  
                         sqlRdr = sqlCde.ExecuteReader();
                         sqlRdr.Close();

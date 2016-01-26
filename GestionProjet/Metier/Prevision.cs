@@ -20,13 +20,23 @@ namespace GestionProjet.Metier
             LaQualif = qualification;
             NbJours = nbJ;
         }
-        public Prevision( Qualification qualification, short nbJ)
+        public Prevision(int idProj, Qualification qualification, short nbJ)
         {
-            
+            CodeProjet = idProj;
             LaQualif = qualification;
             NbJours = nbJ;
         }
 
-
+        public override bool Equals(object obj)
+        {
+            if (obj is Prevision)
+            {
+                return CodePrevision == ((Prevision)obj).CodePrevision;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -64,6 +64,7 @@
             this.lblProjets = new System.Windows.Forms.Label();
             this.comboBoxProjets = new System.Windows.Forms.ComboBox();
             this.btnCreer = new System.Windows.Forms.Button();
+            this.btnPrevision = new System.Windows.Forms.Button();
             this.grpboxProjet.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.projetForfaitBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientBindingSource)).BeginInit();
@@ -281,6 +282,7 @@
             // 
             // grpboxForfait
             // 
+            this.grpboxForfait.Controls.Add(this.btnPrevision);
             this.grpboxForfait.Controls.Add(this.mskTextboxChargeAffectee);
             this.grpboxForfait.Controls.Add(this.lblChargeProjet);
             this.grpboxForfait.Controls.Add(this.lblResponsable);
@@ -430,6 +432,16 @@
             this.btnCreer.UseVisualStyleBackColor = true;
             this.btnCreer.Click += new System.EventHandler(this.btnCreer_Click);
             // 
+            // btnPrevision
+            // 
+            this.btnPrevision.Location = new System.Drawing.Point(307, 173);
+            this.btnPrevision.Name = "btnPrevision";
+            this.btnPrevision.Size = new System.Drawing.Size(75, 23);
+            this.btnPrevision.TabIndex = 7;
+            this.btnPrevision.Text = "Prévision";
+            this.btnPrevision.UseVisualStyleBackColor = true;
+            this.btnPrevision.Click += new System.EventHandler(this.btnPrevision_Click);
+            // 
             // FrmCreationProjet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -497,6 +509,7 @@
         private System.Windows.Forms.Button btnCreer;
         private System.Windows.Forms.MaskedTextBox mskTextboxChargeAffectee;
         private System.Windows.Forms.Label lblChargeProjet;
+        private System.Windows.Forms.Button btnPrevision;
     }
 }
 

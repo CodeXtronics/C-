@@ -21,123 +21,22 @@ namespace GestionProjet.Metier
             return prevision;
             
         }
+
         public bool AddPrevision(Prevision pr)
         {
-            using (SqlConnection sqlConnect = DaoProjet.ConnectSQLServ())
-            {
-                using (SqlCommand sqlCde = new SqlCommand())
-                {//TODO verifier le conflict
-                    try
-                    {
-                        // Ouvre la connection. 
-                        sqlConnect.Open();
-                        // Création de la commande  
-                        SqlDataReader sqlRdr;
-                        sqlCde.Connection = sqlConnect;
-                        // Constitution Requête SQL  
-
-                        //sqlCde.CommandText = strSql;
-                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
-                        sqlCde.CommandText = "AddPrevision";
-                        //affectation du parametre à la procédure stockée
-                        sqlCde.Parameters.Add(new SqlParameter("@idProjet", System.Data.SqlDbType.Int)).Value = pr.CodeProjet;
-                        sqlCde.Parameters.Add(new SqlParameter("@idQualif", System.Data.SqlDbType.TinyInt)).Value = pr.LaQualif.CodeQualif;
-                        sqlCde.Parameters.Add(new SqlParameter("@nbJours", System.Data.SqlDbType.SmallInt)).Value = pr.NbJours;
-
-                        //affectation du parametre OUT à la procédure stockée
-                        SqlParameter pOut = new SqlParameter("@idPrevision", System.Data.SqlDbType.Int);
-                        pOut.Direction = System.Data.ParameterDirection.Output;
-                        sqlCde.Parameters.Add(pOut);
-
-                        // Exécution de la commande  
-                        sqlRdr = sqlCde.ExecuteReader();
-                        sqlRdr.Close();
-
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new DaoException("Ajout prévision impossible  : " + ex.Message, ex);
-                    }
-                    finally { sqlConnect.Close(); }
-                }
-            }
+            prevision.Add(pr);
+            return true;
         }
         public bool UpgPrevision(Prevision pr)
         {
-            using (SqlConnection sqlConnect = DaoProjet.ConnectSQLServ())
-            {
-                using (SqlCommand sqlCde = new SqlCommand())
-                {//TODO verifier le conflict
-                    try
-                    {
-                        // Ouvre la connection. 
-                        sqlConnect.Open();
-                        // Création de la commande  
-                        SqlDataReader sqlRdr;
-                        sqlCde.Connection = sqlConnect;
-                        // Constitution Requête SQL  
-
-                        //sqlCde.CommandText = strSql;
-                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
-                        sqlCde.CommandText = "UpdPrevision";
-                        //affectation du parametre à la procédure stockée
-                        sqlCde.Parameters.Add(new SqlParameter("@idPrevision", System.Data.SqlDbType.Int)).Value = pr.CodePrevision;
-                        sqlCde.Parameters.Add(new SqlParameter("@idProjet", System.Data.SqlDbType.Int)).Value = pr.CodeProjet;
-                        sqlCde.Parameters.Add(new SqlParameter("@idQualif", System.Data.SqlDbType.TinyInt)).Value = pr.LaQualif;
-                        sqlCde.Parameters.Add(new SqlParameter("@nbJours", System.Data.SqlDbType.SmallInt)).Value = pr.NbJours;
-                        
-                        // Exécution de la commande  
-                        sqlRdr = sqlCde.ExecuteReader();
-                        sqlRdr.Close();
-
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new DaoException("Modification prévision impossible  : " + ex.Message, ex);
-                    }
-                    finally { sqlConnect.Close(); }
-                }
-            }
+            prevision.Remove(pr);
+            prevision.Add(pr);
+            return true;
         }
-        public bool DelPrevision(int pr)
+        public bool DelPrevision(Prevision pr)
         {
-            using (SqlConnection sqlConnect =DaoProjet.ConnectSQLServ())
-            {
-                using (SqlCommand sqlCde = new SqlCommand())
-                {//TODO verifier le conflict
-                    try
-                    {
-                        // Ouvre la connection. 
-                        sqlConnect.Open();
-                        // Création de la commande  
-                        SqlDataReader sqlRdr;
-                        sqlCde.Connection = sqlConnect;
-                        // Constitution Requête SQL  
-
-                        //sqlCde.CommandText = strSql;
-                        sqlCde.CommandType = System.Data.CommandType.StoredProcedure;
-                        sqlCde.CommandText = "DelPrevision";
-                        //affectation du parametre à la procédure stockée
-                        sqlCde.Parameters.Add(new SqlParameter("@idprevision", System.Data.SqlDbType.Int)).Value = pr;
-                        // Exécution de la commande  
-                        sqlRdr = sqlCde.ExecuteReader();
-                        sqlRdr.Close();
-
-                        return true;
-
-
-
-
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new DaoException("Suppression prévision impossible  : " + ex.Message, ex);
-                    }
-                    finally { sqlConnect.Close(); }
-                }
-            }
+            prevision.Remove(pr);
+            return true;
         }
         public ProjetForfait() { }
         public ProjetForfait(int co, string n, DateTime dDebP, DateTime dFinP, Client client,string cont,string ml, decimal montContract, bool ouinon, Collaborateur colla)
